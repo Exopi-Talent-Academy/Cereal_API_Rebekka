@@ -1,7 +1,14 @@
+using Cereal_API.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+// Register services:
+var services = builder.Services;
+
+services.AddTransient<ICerealRepository, CerealRepository>();
 
 var app = builder.Build();
 
