@@ -1,3 +1,5 @@
+﻿using Xunit;
+
 namespace CerealAPITests.Controllers;
 
 public class CerealControllerTests

@@ -1,3 +1,6 @@
 <Solution>
+  <Folder Name="/Tests/">
+    <Project Path="CerealAPITests/CerealAPITests.csproj" Id="68737569-9045-4739-b931-40842ba976ff" />
+  </Folder>
   <Project Path="CerealAPI/Cereal API.csproj" />
 </Solution>
