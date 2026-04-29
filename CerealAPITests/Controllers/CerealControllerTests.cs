@@ -1,6 +1,6 @@
-namespace CerealAPITests;
+namespace CerealAPITests.Controllers;
 
-public class UnitTest1
+public class CerealControllerTests
 {
     [Fact]
     public void Test1()
