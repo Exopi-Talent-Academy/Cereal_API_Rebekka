@@ -19,7 +19,7 @@ public class CerealRepository : ICerealRepository
         throw new NotImplementedException();
     }
 
-    public async Task<IEnumerable<CerealDTO>> GetSortedCereals(string predicate, string category)
+    public async Task<IEnumerable<CerealDTO>> GetSortedCereals(string operatorAndValue, string category)
     {
         throw new NotImplementedException();
     }
