@@ -1,12 +1,15 @@
-﻿using Xunit;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace CerealAPITests.Controllers;
 
-public class CerealControllerTests
+[TestClass]
+public sealed class CerealControllerTests
 {
-    [Fact]
+    [TestMethod]
     public void Test1()
     {
-        Assert.True(true);
+        Assert.IsTrue(true);
     }
 }
