@@ -1,5 +1,4 @@
 ﻿using Cereal_API.Repositories;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cereal_Api.Controllers;
