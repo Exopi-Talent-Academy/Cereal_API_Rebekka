@@ -1,5 +1,6 @@
 using Cereal_API.Repositories;
-using Microsoft.Data.Sqlite;
+using Cereal_API.Models;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,15 +10,8 @@ builder.Services.AddRazorPages();
 // Register services:
 var services = builder.Services;
 
-try
-{
-    using var connection = new SqliteConnection(@"Data Source=C:\Dev\ExOpi\Cereal_API_Rebekka\Cereals.db");
-    connection.Open();
-} 
-catch (SqliteException ex)
-{
-    Console.WriteLine(ex.Message);
-}
+services.AddDbContext<CerealDbContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 services.AddTransient<ICerealRepository, CerealRepository>();
 

@@ -4,11 +4,11 @@ namespace Cereal_API.Repositories;
 
 public interface ICerealRepository
 {
-    Task<CerealDTO> GetCerealById(Guid id);
-    Task<CerealDTO> GetCerealByName(string name);
-    Task<IEnumerable<CerealDTO>> GetAllCereals();
-    Task<IEnumerable<CerealDTO>> GetSortedCereals(string operatorAndValue, string category);
-    Task<CerealDTO> CreateCereal(CerealDTO cereal);
-    Task<CerealDTO> UpdateCereal(Guid id, CerealDTO cereal);
+    Task<Cereal> GetCerealById(Guid id);
+    Task<Cereal> GetCerealByName(string name);
+    Task<IEnumerable<Cereal>> GetAllCereals();
+    Task<IEnumerable<Cereal>> GetSortedCereals(string operatorAndValue, string category);
+    Task<Cereal> CreateCereal(Cereal cereal);
+    Task<Cereal> UpdateCereal(Guid id, Cereal cereal);
     Task<bool> DeleteCereal(Guid id);
 }

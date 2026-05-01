@@ -4,32 +4,32 @@ namespace Cereal_API.Repositories;
 
 public class CerealRepository : ICerealRepository
 {
-    public async Task<CerealDTO> GetCerealById(Guid id)
+    public async Task<Cereal> GetCerealById(Guid id)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<CerealDTO> GetCerealByName(string name)
+    public async Task<Cereal> GetCerealByName(string name)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<IEnumerable<CerealDTO>> GetAllCereals()
+    public async Task<IEnumerable<Cereal>> GetAllCereals()
     {
         throw new NotImplementedException();
     }
 
-    public async Task<IEnumerable<CerealDTO>> GetSortedCereals(string operatorAndValue, string category)
+    public async Task<IEnumerable<Cereal>> GetSortedCereals(string operatorAndValue, string category)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<CerealDTO> CreateCereal(CerealDTO cereal)
+    public async Task<Cereal> CreateCereal(Cereal cereal)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<CerealDTO> UpdateCereal(Guid id, CerealDTO cereal)
+    public async Task<Cereal> UpdateCereal(Guid id, Cereal cereal)
     {
         throw new NotImplementedException();
     }

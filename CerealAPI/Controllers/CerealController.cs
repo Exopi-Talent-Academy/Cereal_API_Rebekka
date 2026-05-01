@@ -1,10 +1,19 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Cereal_API.Repositories;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
 namespace Cereal_Api.Controllers;
 
 [Route("api/cereal")]
 public class CerealController : Controller
 {
+    private readonly ICerealRepository _cerealRepository;
+
+    public CerealController(ICerealRepository cerealRepository)
+    {
+        _cerealRepository = cerealRepository;
+    }
+
     // GET: CerealController
     [HttpGet]
     public ActionResult Index()
