@@ -2,6 +2,6 @@
 
 public enum HotOrColdType
 {
-    Hot,
-    Cold
+    H, // Hot
+    C  // Cold
 }

@@ -1,0 +1,5 @@
+name;mfr;type;calories;protein;fat;sodium;fiber;carbo;sugars;potass;vitamins;shelf;weight;cups;rating
+String;Categorical;Categorical;Int;Int;Int;Int;Float;Float;Int;Int;Int;Int;Float;Float;Float
+100% Bran;N;C;70;4;1;130;10;5;6;280;25;3;1;0.33;68.402973
+Apple Jacks;K;C;110;2;0;125;1;11;14;30;0;2;1;1;33.174094
+Nut&Honey Crunch;K;M;120;2;1;190;0;15;9;40;100;2;1;0.67;29.924285

@@ -25,7 +25,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="TestData\" />
     <Folder Include="Repositories\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CerealAPI\Cereal API.csproj" />
   </ItemGroup>
 
 </Project>

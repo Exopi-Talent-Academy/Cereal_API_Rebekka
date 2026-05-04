@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CerealAPITests.Controllers;
+﻿namespace Cereal_API.Tests.Controllers;
 
 [TestClass]
 public sealed class CerealControllerTests
