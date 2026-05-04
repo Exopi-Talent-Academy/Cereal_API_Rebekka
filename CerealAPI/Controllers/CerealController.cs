@@ -13,6 +13,26 @@ public class CerealController : Controller
         _cerealRepository = cerealRepository;
     }
 
+    [HttpGet]
+    async public Task<IActionResult> GetCereal(Guid Id)
+    {
+        var cereal = await _cerealRepository.GetCerealById(Id);
+
+        if (cereal == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(cereal);
+    }
+
+    [HttpGet]
+    async public Task<IActionResult> GetAllCereals()
+    {
+        var cereals = await _cerealRepository.GetAllCereals();
+        return Ok(cereals);
+    }
+
     // GET: CerealController
     [HttpGet]
     public ActionResult Index()
