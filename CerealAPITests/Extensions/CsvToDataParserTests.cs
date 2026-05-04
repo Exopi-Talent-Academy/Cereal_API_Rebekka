@@ -74,6 +74,16 @@ public sealed class CsvToDataParserTests
     }
 
     [TestMethod]
+    public void CsvDataToCereals_ShouldThrowFileNotFoundException_WhenFileDoesNotExist()
+    {
+        // Arrange
+        string nonExistentFilePath = "../../../TestData/non_existent_file.csv";
+
+        // Act & Assert
+        Assert.Throws<FileNotFoundException>(() => CsvToDataParser.CsvDataToCereals(nonExistentFilePath));
+    }
+
+    [TestMethod]
     public void CsvDataToCereals_ShouldNotAddDataRow_WhenItHasInvalidData()
     {
         // Arrange

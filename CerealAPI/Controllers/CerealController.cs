@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cereal_Api.Controllers;
 
-[Route("api/cereal")]
+[Route("api/cereals")]
 public class CerealController : Controller
 {
     private readonly ICerealRepository _cerealRepository;
