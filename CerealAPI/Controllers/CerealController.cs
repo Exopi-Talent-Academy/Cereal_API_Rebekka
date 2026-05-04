@@ -16,100 +16,28 @@ public class CerealController : Controller
     [HttpGet]
     async public Task<IActionResult> GetCereal(Guid Id)
     {
-        var cereal = await _cerealRepository.GetCerealById(Id);
-
-        if (cereal == null)
+        try 
         {
-            return NotFound();
+            var cereal = await _cerealRepository.GetCerealById(Id);
+            return Ok(cereal);
         }
-
-        return Ok(cereal);
+        catch (Exception ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 
     [HttpGet]
     async public Task<IActionResult> GetAllCereals()
     {
-        var cereals = await _cerealRepository.GetAllCereals();
-        return Ok(cereals);
-    }
-
-    // GET: CerealController
-    [HttpGet]
-    public ActionResult Index()
-    {
-        return View();
-    }
-
-    // GET: CerealController/Details/5
-    [HttpGet]
-    public ActionResult Details(int id)
-    {
-        return View();
-    }
-
-    // GET: CerealController/Create
-    [HttpGet]
-    public ActionResult Create()
-    {
-        return View();
-    }
-
-    // POST: CerealController/Create
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public ActionResult Create(IFormCollection collection)
-    {
-        try
+        try 
         {
-            return RedirectToAction(nameof(Index));
+            var cereals = await _cerealRepository.GetAllCereals();
+            return Ok(cereals);
         }
-        catch
+        catch (Exception ex)
         {
-            return View();
-        }
-    }
-
-    // GET: CerealController/Edit/5
-    [HttpPost]
-    public ActionResult Edit(int id)
-    {
-        return View();
-    }
-
-    // POST: CerealController/Edit/5
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public ActionResult Edit(int id, IFormCollection collection)
-    {
-        try
-        {
-            return RedirectToAction(nameof(Index));
-        }
-        catch
-        {
-            return View();
-        }
-    }
-
-    // GET: CerealController/Delete/5
-    [HttpDelete]
-    public ActionResult Delete(int id)
-    {
-        return View();
-    }
-
-    // POST: CerealController/Delete/5
-    [HttpDelete]
-    [ValidateAntiForgeryToken]
-    public ActionResult Delete(int id, IFormCollection collection)
-    {
-        try
-        {
-            return RedirectToAction(nameof(Index));
-        }
-        catch
-        {
-            return View();
+            return BadRequest(ex.Message);
         }
     }
 }

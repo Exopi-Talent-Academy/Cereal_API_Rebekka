@@ -71,14 +71,14 @@ public sealed class CerealControllerTests
         // Arrange
         var mockRepo = new Mock<ICerealRepository>();
         var cerealId = Guid.NewGuid();
-        mockRepo.Setup(repo => repo.GetCerealById(cerealId)).ReturnsAsync((Cereal?)null);
+        mockRepo.Setup(repo => repo.GetCerealById(cerealId)).ThrowsAsync(new Exception("Cereal not found"));
         var controller = new CerealController(mockRepo.Object);
 
         // Act
         var result = await controller.GetCereal(cerealId);
 
         // Assert
-        Assert.IsInstanceOfType(result, typeof(NotFoundResult));
+        Assert.IsInstanceOfType(result, typeof(NotFoundObjectResult));
     }
 
     [TestMethod]
@@ -101,5 +101,20 @@ public sealed class CerealControllerTests
         Assert.IsInstanceOfType(result, typeof(OkObjectResult));
         var okResult = result as OkObjectResult;
         Assert.AreEqual(expectedCereals.Count, (okResult!.Value as IEnumerable<Cereal>)!.Count());
+    }
+
+    [TestMethod]
+    public async Task GetAllCereals_ReturnsBadRequest_WhenExceptionThrown() 
+    {
+        // Arrange
+        var mockRepo = new Mock<ICerealRepository>();
+        mockRepo.Setup(repo => repo.GetAllCereals()).ThrowsAsync(new Exception("Database error"));
+        var controller = new CerealController(mockRepo.Object);
+
+        // Act
+        var result = await controller.GetAllCereals();
+
+        // Assert
+        Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
     }
 }
