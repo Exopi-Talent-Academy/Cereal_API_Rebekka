@@ -15,7 +15,17 @@ public class CsvToDataParser
             throw new ArgumentException("The file given is not a csv-file.");
         }
 
+        try
+        {
+            using var stream = File.OpenRead(csvPath);
+        }
+        catch (Exception ex)
+        {
+            throw new FileNotFoundException($"Could not find the file at path {csvPath}. Error: {ex.Message}");
+        }
+
         using var reader = new StreamReader(csvPath);
+
         var configuration = new CsvConfiguration(CultureInfo.InvariantCulture)
         {
             Delimiter = ";"
@@ -35,7 +45,7 @@ public class CsvToDataParser
                 (
                     Guid.NewGuid(),
                     records[i].name,
-                    (Manufacturers)Enum.Parse(typeof(Manufacturers), records[i].mfr),
+                    ManufacturersExtensions.GetManufacturers(records[i].mfr),
                     (HotOrColdType)Enum.Parse(typeof(HotOrColdType), records[i].type),
                     int.Parse(records[i].calories),
                     int.Parse(records[i].protein),
