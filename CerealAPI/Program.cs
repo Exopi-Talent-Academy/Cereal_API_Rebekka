@@ -17,6 +17,13 @@ services.AddTransient<ICerealRepository, CerealRepository>();
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var scopeServices = scope.ServiceProvider;
+
+    SeedDatabase.Initialize(scopeServices);
+}
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
