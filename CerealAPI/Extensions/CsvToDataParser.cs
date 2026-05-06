@@ -46,17 +46,17 @@ public class CsvToDataParser
                     Guid.NewGuid(),
                     records[i].name,
                     ManufacturersExtensions.GetManufacturers(records[i].mfr),
-                    (HotOrColdType)Enum.Parse(typeof(HotOrColdType), records[i].type),
+                    HotOrColdTypeExtensions.FromString(records[i].type),
                     int.Parse(records[i].calories),
                     int.Parse(records[i].protein),
                     int.Parse(records[i].fat),
                     int.Parse(records[i].sodium),
-                    double.Parse(records[i].fiber, CultureInfo.InvariantCulture.NumberFormat), // need to specify the culture so it parses the float with a dot instead of a comma
+                    double.Parse(records[i].fiber, CultureInfo.InvariantCulture.NumberFormat), // need to specify the culture so it parses the double with a dot instead of a comma
                     double.Parse(records[i].carbo, CultureInfo.InvariantCulture.NumberFormat),
                     int.Parse(records[i].sugars),
                     int.Parse(records[i].potass),
-                    (VitaminAndMineralsType)Enum.Parse(typeof(VitaminAndMineralsType), records[i].vitamins),
-                    (DisplayShelfType)Enum.Parse(typeof(DisplayShelfType), records[i].shelf),
+                    VitaminAndMineralsTypeExtensions.FromString(records[i].vitamins),
+                    DisplayShelfTypeExtensions.FromString(records[i].shelf),
                     double.Parse(records[i].weight, CultureInfo.InvariantCulture.NumberFormat),
                     double.Parse(records[i].cups, CultureInfo.InvariantCulture.NumberFormat),
                     double.Parse(records[i].rating, CultureInfo.InvariantCulture.NumberFormat)

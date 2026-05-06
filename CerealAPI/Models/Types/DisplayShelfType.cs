@@ -14,6 +14,20 @@ public static class DisplayShelfTypeExtensions
         return (int)displayShelfType;
     }
 
+    public static DisplayShelfType FromString(string value)
+    {
+        return value.ToUpper().Trim() switch
+        {
+            "1" => DisplayShelfType.One,
+            "2" => DisplayShelfType.Two,
+            "3" => DisplayShelfType.Three,
+            "ONE" => DisplayShelfType.One,
+            "TWO" => DisplayShelfType.Two,
+            "THREE" => DisplayShelfType.Three,
+            _ => throw new ArgumentOutOfRangeException(nameof(value), $"Value {value} is not a valid DisplayShelfType")
+        };
+    }
+
     public static DisplayShelfType FromInt(int value)
     {
         return value switch

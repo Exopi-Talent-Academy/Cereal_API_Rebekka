@@ -15,6 +15,7 @@ public sealed class CsvToDataParserTests
 
         string cereal1Name = "100% Bran";
         Manufacturers cereal1Mfr = Manufacturers.N;
+        HotOrColdType cereal1Type = HotOrColdType.C;
         int cereal1Calories = 70;
         VitaminAndMineralsType cereal1Vitamins = VitaminAndMineralsType.TwentyFive;
         DisplayShelfType cereal1Shelf = DisplayShelfType.Three;
@@ -43,6 +44,7 @@ public sealed class CsvToDataParserTests
 
         Assert.AreEqual(cereal1Name, cereals[0].Name);
         Assert.AreEqual(cereal1Mfr, cereals[0].Mfr);
+        Assert.AreEqual(cereal1Type, cereals[0].Type);
         Assert.AreEqual(cereal1Calories, cereals[0].Calories);
         Assert.AreEqual(cereal1Vitamins, cereals[0].Vitamins);
         Assert.AreEqual(cereal1Shelf, cereals[0].Shelf);
