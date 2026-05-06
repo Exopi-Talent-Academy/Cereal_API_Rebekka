@@ -51,15 +51,15 @@ public class CsvToDataParser
                     int.Parse(records[i].protein),
                     int.Parse(records[i].fat),
                     int.Parse(records[i].sodium),
-                    float.Parse(records[i].fiber, CultureInfo.InvariantCulture.NumberFormat), // need to specify the culture so it parses the float with a dot instead of a comma
-                    float.Parse(records[i].carbo, CultureInfo.InvariantCulture.NumberFormat),
+                    double.Parse(records[i].fiber, CultureInfo.InvariantCulture.NumberFormat), // need to specify the culture so it parses the float with a dot instead of a comma
+                    double.Parse(records[i].carbo, CultureInfo.InvariantCulture.NumberFormat),
                     int.Parse(records[i].sugars),
                     int.Parse(records[i].potass),
                     (VitaminAndMineralsType)Enum.Parse(typeof(VitaminAndMineralsType), records[i].vitamins),
                     (DisplayShelfType)Enum.Parse(typeof(DisplayShelfType), records[i].shelf),
-                    float.Parse(records[i].weight, CultureInfo.InvariantCulture.NumberFormat),
-                    float.Parse(records[i].cups, CultureInfo.InvariantCulture.NumberFormat),
-                    float.Parse(records[i].rating, CultureInfo.InvariantCulture.NumberFormat)
+                    double.Parse(records[i].weight, CultureInfo.InvariantCulture.NumberFormat),
+                    double.Parse(records[i].cups, CultureInfo.InvariantCulture.NumberFormat),
+                    double.Parse(records[i].rating, CultureInfo.InvariantCulture.NumberFormat)
                 );
             }
             catch (Exception ex)

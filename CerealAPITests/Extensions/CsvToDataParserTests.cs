@@ -18,21 +18,21 @@ public sealed class CsvToDataParserTests
         int cereal1Calories = 70;
         VitaminAndMineralsType cereal1Vitamins = VitaminAndMineralsType.TwentyFive;
         DisplayShelfType cereal1Shelf = DisplayShelfType.Three;
-        float cereal1Rating = 68.402973f;
+        double cereal1Rating = 68.402973;
 
         string cereal2Name = "Apple Jacks";
         Manufacturers cereal2Mfr = Manufacturers.K;
         int cereal2Calories = 110;
         VitaminAndMineralsType cereal2Vitamins = VitaminAndMineralsType.Zero;
         DisplayShelfType cereal2Shelf = DisplayShelfType.Two;
-        float cereal2Rating = 33.174094f;
+        double cereal2Rating = 33.174094;
 
         string cereal3Name = "Nut&Honey Crunch";
         Manufacturers cereal3Mfr = Manufacturers.K;
         int cereal3Calories = 120;
         VitaminAndMineralsType cereal3Vitamins = VitaminAndMineralsType.OneHundred;
         DisplayShelfType cereal3Shelf = DisplayShelfType.Two;
-        float cereal3Rating = 29.924285f;
+        double cereal3Rating = 29.924285;
 
         // Act
         List<Cereal> cereals = CsvToDataParser.CsvDataToCereals(csvPath);

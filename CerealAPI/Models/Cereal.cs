@@ -30,12 +30,12 @@ public record Cereal(Guid Id,
                      int Protein,
                      int Fat,
                      int Sodium,
-                     float Fiber,
-                     float Carbo,
+                     double Fiber,
+                     double Carbo,
                      int Sugars,
                      int Potass,
                      VitaminAndMineralsType Vitamins, //int in original dataset
                      DisplayShelfType Shelf,         //int in original dataset
-                     float Weight,
-                     float Cups,
-                     float Rating);
+                     double Weight,
+                     double Cups,
+                     double Rating);
