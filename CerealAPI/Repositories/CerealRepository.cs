@@ -13,7 +13,14 @@ public class CerealRepository : ICerealRepository
 
     public async Task<Cereal> GetCerealById(Guid id)
     {
-        throw new NotImplementedException();
+        var cereal = await _context.Cereals.FindAsync(id);
+
+        if (cereal == null)
+        {
+            throw new Exception($"Cereal with ID {id} not found.");
+        }
+
+        return cereal;
     }
 
     public async Task<Cereal> GetCerealByName(string name)
