@@ -1,0 +1,110 @@
+﻿@page
+@model Cereal_API.Pages.Cereal.EditCerealModel
+
+@{
+    ViewData["Title"] = "Edit Cereal";
+}
+
+<h1>Edit Cereal</h1>
+
+<h4>Cereal</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Cereal.Id" />
+            <div class="form-group">
+                <label asp-for="Cereal.Name" class="control-label"></label>
+                <input asp-for="Cereal.Name" class="form-control" />
+                <span asp-validation-for="Cereal.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cereal.Mfr" class="control-label"></label>
+                <select asp-for="Cereal.Mfr" class="form-control" ></select>
+                <span asp-validation-for="Cereal.Mfr" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cereal.Type" class="control-label"></label>
+                <select asp-for="Cereal.Type" class="form-control" ></select>
+                <span asp-validation-for="Cereal.Type" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cereal.Calories" class="control-label"></label>
+                <input asp-for="Cereal.Calories" class="form-control" />
+                <span asp-validation-for="Cereal.Calories" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cereal.Protein" class="control-label"></label>
+                <input asp-for="Cereal.Protein" class="form-control" />
+                <span asp-validation-for="Cereal.Protein" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cereal.Fat" class="control-label"></label>
+                <input asp-for="Cereal.Fat" class="form-control" />
+                <span asp-validation-for="Cereal.Fat" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cereal.Sodium" class="control-label"></label>
+                <input asp-for="Cereal.Sodium" class="form-control" />
+                <span asp-validation-for="Cereal.Sodium" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cereal.Fiber" class="control-label"></label>
+                <input asp-for="Cereal.Fiber" class="form-control" />
+                <span asp-validation-for="Cereal.Fiber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cereal.Carbo" class="control-label"></label>
+                <input asp-for="Cereal.Carbo" class="form-control" />
+                <span asp-validation-for="Cereal.Carbo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cereal.Sugars" class="control-label"></label>
+                <input asp-for="Cereal.Sugars" class="form-control" />
+                <span asp-validation-for="Cereal.Sugars" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cereal.Potass" class="control-label"></label>
+                <input asp-for="Cereal.Potass" class="form-control" />
+                <span asp-validation-for="Cereal.Potass" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cereal.Vitamins" class="control-label"></label>
+                <select asp-for="Cereal.Vitamins" class="form-control" ></select>
+                <span asp-validation-for="Cereal.Vitamins" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cereal.Shelf" class="control-label"></label>
+                <select asp-for="Cereal.Shelf" class="form-control" ></select>
+                <span asp-validation-for="Cereal.Shelf" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cereal.Weight" class="control-label"></label>
+                <input asp-for="Cereal.Weight" class="form-control" />
+                <span asp-validation-for="Cereal.Weight" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cereal.Cups" class="control-label"></label>
+                <input asp-for="Cereal.Cups" class="form-control" />
+                <span asp-validation-for="Cereal.Cups" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cereal.Rating" class="control-label"></label>
+                <input asp-for="Cereal.Rating" class="form-control" />
+                <span asp-validation-for="Cereal.Rating" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

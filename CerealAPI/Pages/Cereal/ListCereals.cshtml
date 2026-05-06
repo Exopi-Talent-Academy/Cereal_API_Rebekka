@@ -1,0 +1,126 @@
+﻿@page
+@model Cereal_API.Pages.Cereal.ListCerealsModel
+
+@{
+    ViewData["Title"] = "Cereals";
+}
+
+<h1>Cereals</h1>
+
+<p>
+    <a asp-page="CreateCereal">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Cereal[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cereal[0].Mfr)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cereal[0].Type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cereal[0].Calories)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cereal[0].Protein)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cereal[0].Fat)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cereal[0].Sodium)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cereal[0].Fiber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cereal[0].Carbo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cereal[0].Sugars)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cereal[0].Potass)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cereal[0].Vitamins)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cereal[0].Shelf)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cereal[0].Weight)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cereal[0].Cups)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cereal[0].Rating)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Cereal) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Mfr)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Type)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Calories)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Protein)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fat)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sodium)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fiber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Carbo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sugars)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Potass)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Vitamins)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Shelf)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Weight)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cups)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Rating)
+            </td>
+            <td>
+                <a asp-page="./EditCereal" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./DetailsCereal" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./DeleteCereal" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

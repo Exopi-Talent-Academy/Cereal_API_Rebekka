@@ -4,6 +4,13 @@ namespace Cereal_API.Repositories;
 
 public class CerealRepository : ICerealRepository
 {
+    private readonly CerealDbContext _context;
+
+    public CerealRepository(CerealDbContext context)
+    {
+        _context = context;
+    }
+
     public async Task<Cereal> GetCerealById(Guid id)
     {
         throw new NotImplementedException();

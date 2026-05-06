@@ -1,8 +1,9 @@
-﻿using Cereal_Api.Controllers;
+﻿using Cereal_API.Controllers;
 using Cereal_API.Models;
 using Cereal_API.Models.Types;
 using Cereal_API.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Diagnostics;
 using Moq;
 
 namespace Cereal_API.Tests.Controllers;
@@ -18,15 +19,15 @@ public sealed class CerealControllerTests
                                                      3,
                                                      4,
                                                      2,
-                                                     2.3f,
-                                                     3.2f,
+                                                     2.3,
+                                                     3.2,
                                                      1,
                                                      1,
                                                      VitaminAndMineralsType.TwentyFive,
                                                      DisplayShelfType.One,
-                                                     1f,
-                                                     0.33f,
-                                                     0.33f);
+                                                     1,
+                                                     0.33,
+                                                     0.33);
 
     private readonly Cereal TestCereal2 = new Cereal(Guid.NewGuid(), 
                                                      "Test Cereal 2",
@@ -36,18 +37,18 @@ public sealed class CerealControllerTests
                                                      2,
                                                      3,
                                                      1,
-                                                     1.5f,
-                                                     2.8f,
+                                                     1.5,
+                                                     2.8,
                                                      0,
                                                      0,
                                                      VitaminAndMineralsType.OneHundred,
                                                      DisplayShelfType.Two,
-                                                     0.5f,
-                                                     0.25f,
-                                                     0.25f);
+                                                     0.5,
+                                                     0.25,
+                                                     0.25);
 
     [TestMethod]
-    public async Task GetCereal_ReturnsOkResult_WhenCerealExists()
+    public async Task GetCereal_ReturnsCereal_WhenCerealExists()
     {
         // Arrange
         var mockRepo = new Mock<ICerealRepository>();
@@ -60,9 +61,8 @@ public sealed class CerealControllerTests
         var result = await controller.GetCereal(cerealId);
 
         // Assert
-        Assert.IsInstanceOfType(result, typeof(OkObjectResult));
-        var okResult = result as OkObjectResult;
-        Assert.AreEqual(TestCereal1, okResult!.Value);
+        Assert.IsInstanceOfType(result.Value, typeof(Cereal));
+        Assert.AreEqual(TestCereal1, result.Value);
     }
 
     [TestMethod]
@@ -78,7 +78,7 @@ public sealed class CerealControllerTests
         var result = await controller.GetCereal(cerealId);
 
         // Assert
-        Assert.IsInstanceOfType(result, typeof(NotFoundObjectResult));
+        Assert.IsInstanceOfType(result.Result, typeof(NotFoundObjectResult));
     }
 
     [TestMethod]
@@ -95,11 +95,11 @@ public sealed class CerealControllerTests
         var controller = new CerealController(mockRepo.Object);
 
         // Act
-        var result = await controller.GetAllCereals();
+        var result = await controller.GetCereals();
 
         // Assert
-        Assert.IsInstanceOfType(result, typeof(OkObjectResult));
-        var okResult = result as OkObjectResult;
+        Assert.IsInstanceOfType(result.Result, typeof(OkObjectResult));
+        var okResult = result.Result as OkObjectResult;
         Assert.AreEqual(expectedCereals.Count, (okResult!.Value as IEnumerable<Cereal>)!.Count());
     }
 
@@ -112,9 +112,9 @@ public sealed class CerealControllerTests
         var controller = new CerealController(mockRepo.Object);
 
         // Act
-        var result = await controller.GetAllCereals();
+        var result = await controller.GetCereals();
 
         // Assert
-        Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
+        Assert.IsInstanceOfType(result.Result, typeof(BadRequestObjectResult));
     }
 }
