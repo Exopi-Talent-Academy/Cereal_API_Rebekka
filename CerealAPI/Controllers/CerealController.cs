@@ -46,7 +46,29 @@ public class CerealController : ControllerBase
         }
     }
 
-    // PUT: api/Cereal/5
+    // POST: api/Cereal
+    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    [HttpPost]
+    public async Task<ActionResult<Cereal>> PostCereal(Cereal cereal)
+    {
+        try
+        {
+            var createdCereal = await _cerealRepository.CreateCereal(cereal);
+            return CreatedAtAction("GetCereal", new { id = createdCereal.Id }, createdCereal);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+
+        // all code given by template, should probably be moved to CerealRepository
+        //_context.Cereals.Add(cereal);
+        //await _context.SaveChangesAsync();
+
+        //return CreatedAtAction("GetCereal", new { id = cereal.Id }, cereal);
+    }
+
+    // POST: api/Cereal/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost("{id}")]
     public async Task<IActionResult> PostCereal(Guid id, Cereal cereal)
@@ -77,19 +99,6 @@ public class CerealController : ControllerBase
         //}
 
         //return NoContent();
-    }
-
-    // POST: api/Cereal
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    [HttpPost]
-    public async Task<ActionResult<Cereal>> PostCereal(Cereal cereal)
-    {
-        throw new NotImplementedException();
-        // all code given by template, should probably be moved to CerealRepository
-        //_context.Cereals.Add(cereal);
-        //await _context.SaveChangesAsync();
-
-        //return CreatedAtAction("GetCereal", new { id = cereal.Id }, cereal);
     }
 
     // DELETE: api/Cereal/5
