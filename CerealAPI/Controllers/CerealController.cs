@@ -29,10 +29,6 @@ public class CerealController : ControllerBase
         {
             return BadRequest(ex.Message);
         }
-
-        /* code given by template, should probably be moved to CerealRepository
-        return await _context.Cereals.ToListAsync();
-        */
     }
 
     // GET: api/Cereal/5
@@ -48,16 +44,6 @@ public class CerealController : ControllerBase
         {
             return NotFound(ex.Message);
         }
-
-        /* code given by template, should probably be moved to CerealRepository
-        var cereal = await _context.Cereals.FindAsync(id);
-
-        if (cereal == null)
-        {
-            return NotFound();
-        }
-
-        return cereal;*/
     }
 
     // PUT: api/Cereal/5

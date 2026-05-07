@@ -1,4 +1,5 @@
 ﻿using Cereal_API.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Cereal_API.Repositories;
 
@@ -30,7 +31,14 @@ public class CerealRepository : ICerealRepository
 
     public async Task<IEnumerable<Cereal>> GetAllCereals()
     {
-        throw new NotImplementedException();
+        var cereals = await _context.Cereals.ToListAsync();
+
+        if (cereals == null || cereals.Count == 0)
+        {
+            throw new Exception("No cereals found.");
+        }
+
+        return cereals;
     }
 
     public async Task<IEnumerable<Cereal>> GetSortedCereals(string operatorAndValue, string category)

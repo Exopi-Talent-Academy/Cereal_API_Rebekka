@@ -24,6 +24,6 @@ public class ListCerealsModel : PageModel
     public async Task OnGetAsync()
     {
         var ok = await _repository.GetAllCereals();
-        Cereal = ok.ToList();
+        Cereal = ok.OrderBy(c => c.Name).ToList();
     }
 }
