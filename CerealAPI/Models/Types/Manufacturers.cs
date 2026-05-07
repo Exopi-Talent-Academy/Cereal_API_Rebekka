@@ -13,7 +13,7 @@ public enum Manufacturers
 
 public static class ManufacturersExtensions
 {
-    public static Manufacturers GetManufacturers(string manufacturer)
+    public static Manufacturers GetManufacturers(this string manufacturer)
     {
         return manufacturer.ToUpper().Trim() switch
         {
@@ -28,7 +28,7 @@ public static class ManufacturersExtensions
         };
     }
 
-    public static string GetFullNameFromType(Manufacturers manufacturer)
+    public static string GetFullNameFromType(this Manufacturers manufacturer)
     {
         return manufacturer switch
         {
@@ -43,7 +43,7 @@ public static class ManufacturersExtensions
         };
     }
 
-    public static string GetFullNameFromString(string manufacturer)
+    public static string GetFullNameFromString(this string manufacturer)
     {
         return manufacturer switch
         {

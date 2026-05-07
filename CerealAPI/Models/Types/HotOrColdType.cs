@@ -8,7 +8,7 @@ public enum HotOrColdType
 
 public static class HotOrColdTypeExtensions
 {
-    public static HotOrColdType FromString(string type)
+    public static HotOrColdType FromString(this string type)
     {
         return type.ToUpper().Trim() switch
         {
@@ -17,6 +17,16 @@ public static class HotOrColdTypeExtensions
             "HOT" => HotOrColdType.H,
             "COLD" => HotOrColdType.C,
             _ => throw new ArgumentException($"Invalid HotOrColdType value: {type}")
+        };
+    }
+
+    public static string ToFullString(this HotOrColdType type)
+    {
+        return type switch
+        {
+            HotOrColdType.H => "Hot",
+            HotOrColdType.C => "Cold",
+            _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
     }
 }

@@ -9,12 +9,12 @@ public enum VitaminAndMineralsType
 
 public static class VitaminAndMineralsTypeExtensions
 {
-    public static int ToInt(VitaminAndMineralsType vitaminAndMineralsType)
+    public static int ToInt(this VitaminAndMineralsType vitaminAndMineralsType)
     {
         return (int)vitaminAndMineralsType;
     }
 
-    public static VitaminAndMineralsType FromString(string value)
+    public static VitaminAndMineralsType FromString(this string value)
     {
         return value.ToUpper().Trim() switch
         {
@@ -31,7 +31,7 @@ public static class VitaminAndMineralsTypeExtensions
         };
     }
 
-    public static VitaminAndMineralsType FromInt(int value)
+    public static VitaminAndMineralsType FromInt(this int value)
     {
         return value switch
         {

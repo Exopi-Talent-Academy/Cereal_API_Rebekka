@@ -14,7 +14,7 @@ public static class DisplayShelfTypeExtensions
         return (int)displayShelfType;
     }
 
-    public static DisplayShelfType FromString(string value)
+    public static DisplayShelfType FromString(this string value)
     {
         return value.ToUpper().Trim() switch
         {
@@ -28,7 +28,7 @@ public static class DisplayShelfTypeExtensions
         };
     }
 
-    public static DisplayShelfType FromInt(int value)
+    public static DisplayShelfType FromInt(this int value)
     {
         return value switch
         {

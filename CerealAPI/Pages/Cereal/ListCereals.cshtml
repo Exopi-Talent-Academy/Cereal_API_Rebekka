@@ -1,4 +1,5 @@
 ﻿@page
+@using Cereal_API.Models.Types
 @model Cereal_API.Pages.Cereal.ListCerealsModel
 
 @{
@@ -17,13 +18,13 @@
                 @Html.DisplayNameFor(model => model.Cereal[0].Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Cereal[0].Mfr)
+                Manufacturer
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Cereal[0].Type)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Cereal[0].Calories)
+                Calories per serving
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Cereal[0].Protein)
@@ -38,25 +39,25 @@
                 @Html.DisplayNameFor(model => model.Cereal[0].Fiber)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Cereal[0].Carbo)
+                Carbohydrates
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Cereal[0].Sugars)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Cereal[0].Potass)
+                Potassium
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Cereal[0].Vitamins)
+                Vitamins and Minerals
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Cereal[0].Shelf)
+                Display Shelf
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Cereal[0].Weight)
+                Weight per serving
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Cereal[0].Cups)
+                Cups per serving
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Cereal[0].Rating)
@@ -68,52 +69,52 @@
 @foreach (var item in Model.Cereal) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                <p>@(item.Name)</p>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Mfr)
+                <p>@(item.Mfr.GetFullNameFromType())</p>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Type)
+                <p>@(item.Type.ToFullString())</p>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Calories)
+                <p>@(item.Calories)kcal</p>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Protein)
+                <p>@(item.Protein)g</p>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Fat)
+                <p>@(item.Fat)g</p>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Sodium)
+                <p>@(item.Sodium)mg</p>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Fiber)
+                <p>@(item.Fiber)g</p>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Carbo)
+                <p>@(item.Carbo)g</p>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Sugars)
+                <p>@(item.Sugars)g</p>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Potass)
+                <p>@(item.Potass)mg</p>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Vitamins)
+                <p>@(item.Vitamins.ToInt())%</p>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Shelf)
+                <p>@(item.Shelf.ToInt())</p>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Weight)
+                <p>@(item.Weight)oz</p>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Cups)
+                <p>@(item.Cups)cups</p>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Rating)
+                <p>@(item.Rating)</p>
             </td>
             <td>
                 <a asp-page="./EditCereal" asp-route-id="@item.Id">Edit</a> |
