@@ -11,4 +11,5 @@ public interface ICerealRepository
     Task<Cereal> CreateCereal(Cereal cereal);
     Task<Cereal> UpdateCereal(Guid id, Cereal cereal);
     Task<bool> DeleteCereal(Guid id);
+    bool CerealExists(Guid id);
 }

@@ -72,32 +72,25 @@ public class CerealController : ControllerBase
     [HttpPost("{id}")]
     public async Task<IActionResult> PostCereal(Guid id, Cereal cereal)
     {
-        throw new NotImplementedException();
-        // all code given by template, should probably be moved to CerealRepository
-        //if (id != cereal.Id)
-        //{
-        //    return BadRequest();
-        //}
+        if (id != cereal.Id)
+        {
+            return BadRequest();
+        }
 
-        //_context.Entry(cereal).State = EntityState.Modified;
+        if (!_cerealRepository.CerealExists(id))
+        {
+            return BadRequest("User cannot choose ID for new objects");
+        }
 
-        //try
-        //{
-        //    await _context.SaveChangesAsync();
-        //}
-        //catch (DbUpdateConcurrencyException)
-        //{
-        //    if (!CerealExists(id))
-        //    {
-        //        return NotFound();
-        //    }
-        //    else
-        //    {
-        //        throw;
-        //    }
-        //}
-
-        //return NoContent();
+        try
+        {
+            await _cerealRepository.UpdateCereal(id, cereal);
+            return NoContent();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     // DELETE: api/Cereal/5
@@ -116,12 +109,5 @@ public class CerealController : ControllerBase
         //await _context.SaveChangesAsync();
 
         //return NoContent();
-    }
-
-    // all code given by template, should probably be moved to CerealRepository
-    private bool CerealExists(Guid id)
-    {
-        throw new NotImplementedException();
-        //return _context.Cereals.Any(e => e.Id == id);
     }
 }

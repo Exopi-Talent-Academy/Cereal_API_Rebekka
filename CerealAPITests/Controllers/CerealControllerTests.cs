@@ -150,4 +150,74 @@ public sealed class CerealControllerTests
         // Assert
         Assert.IsInstanceOfType(result.Result, typeof(BadRequestObjectResult));
     }
+
+    [TestMethod]
+    public async Task PostCerealNoId_WhenExceptionThrown_ReturnsBadRequest() 
+    {
+        // Arrange
+        var mockRepo = new Mock<ICerealRepository>();
+        Cereal testCereal = TestCereal1 with { Id = Guid.Empty }; // Simulate a client sending a cereal without an ID
+        mockRepo.Setup(repo => repo.CreateCereal(testCereal)).ThrowsAsync(new Exception("Database error"));
+        var controller = new CerealController(mockRepo.Object);
+
+        // Act
+        var result = await controller.PostCereal(testCereal);
+
+        // Assert
+        Assert.IsInstanceOfType(result.Result, typeof(BadRequestObjectResult));
+    }
+
+    [TestMethod]
+    public async Task PostCerealWithId_WhenIdExists_UpdatesCereal() 
+    {
+        // Arrange
+        var mockRepo = new Mock<ICerealRepository>();
+        var existingCerealId = TestCereal1.Id;
+        Cereal updatedCereal = TestCereal1 with { Name = "Updated Cereal Name" };
+        mockRepo.Setup(repo => repo.CerealExists(existingCerealId)).Returns(true);
+        mockRepo.Setup(repo => repo.UpdateCereal(existingCerealId, updatedCereal)).ReturnsAsync(updatedCereal);
+        var controller = new CerealController(mockRepo.Object);
+
+        // Act
+        var result = await controller.PostCereal(existingCerealId, updatedCereal);
+
+        // Assert
+        Assert.IsInstanceOfType(result, typeof(NoContentResult));
+    }
+
+    [TestMethod]
+    public async Task PostCerealWithId_WhenIdDoesNotExist_ReturnsBadRequest() 
+    {
+        // Arrange
+        var mockRepo = new Mock<ICerealRepository>();
+        var nonExistentCerealId = Guid.NewGuid();
+        Cereal updatedCereal = TestCereal1 with { Id = nonExistentCerealId, Name = "Updated Cereal Name" };
+        mockRepo.Setup(repo => repo.CerealExists(nonExistentCerealId)).Returns(false);
+        mockRepo.Setup(repo => repo.UpdateCereal(nonExistentCerealId, updatedCereal)).ThrowsAsync(new Exception("Cereal not found"));
+        var controller = new CerealController(mockRepo.Object);
+
+        // Act
+        var result = await controller.PostCereal(nonExistentCerealId, updatedCereal);
+
+        // Assert
+        Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
+    }
+
+    [TestMethod]
+    public async Task PostCerealWithId_WhenExceptionThrown_ReturnsBadRequest() 
+    {
+        // Arrange
+        var mockRepo = new Mock<ICerealRepository>();
+        var existingCerealId = TestCereal1.Id;
+        Cereal updatedCereal = TestCereal1 with { Name = "Updated Cereal Name" };
+        mockRepo.Setup(repo => repo.CerealExists(existingCerealId)).Returns(true);
+        mockRepo.Setup(repo => repo.UpdateCereal(existingCerealId, updatedCereal)).ThrowsAsync(new Exception("Database error"));
+        var controller = new CerealController(mockRepo.Object);
+
+        // Act
+        var result = await controller.PostCereal(existingCerealId, updatedCereal);
+
+        // Assert
+        Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
+    }
 }
