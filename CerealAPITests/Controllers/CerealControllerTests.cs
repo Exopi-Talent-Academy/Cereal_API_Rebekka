@@ -98,9 +98,9 @@ public sealed class CerealControllerTests
         var result = await controller.GetCereals();
 
         // Assert
-        Assert.IsInstanceOfType(result.Result, typeof(OkObjectResult));
-        var okResult = result.Result as OkObjectResult;
-        Assert.AreEqual(expectedCereals.Count, (okResult!.Value as IEnumerable<Cereal>)!.Count());
+        Assert.IsInstanceOfType(result.Result, typeof(ViewResult));
+        var viewResult = result.Result as ViewResult;
+        Assert.AreEqual(expectedCereals.Count, (viewResult!.Model as IEnumerable<Cereal>)!.Count());
     }
 
     [TestMethod]

@@ -7,7 +7,7 @@ namespace Cereal_API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class CerealController : ControllerBase
+public class CerealController : Controller
 {
     private readonly ICerealRepository _cerealRepository;
 
@@ -23,7 +23,7 @@ public class CerealController : ControllerBase
         try
         {
             var cereals = await _cerealRepository.GetAllCereals();
-            return Ok(cereals);
+            return View(cereals);
         }
         catch (Exception ex)
         {
