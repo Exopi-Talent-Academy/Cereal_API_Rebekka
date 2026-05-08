@@ -187,4 +187,41 @@ public sealed class CerealRepositoryTests
             Assert.AreEqual(newCereal.Name, createdCereal.Name);
         }
     }
+
+    [TestMethod]
+    public async Task UpdateCereal_WithExistingId_UpdatesDatabase() 
+    {
+        // Arrange
+        using (var context = GetTestDbContext("UpdateCereal_WithExistingId_UpdatesDatabase"))
+        {
+            var repository = new CerealRepository(context);
+            var updatedCereal = TestCereal1 with { Name = "Updated Cereal Name" };
+
+            // Act
+            var result = await repository.UpdateCereal(TestCereal1.Id, updatedCereal);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(TestCereal1.Id, result.Id);
+            Assert.AreEqual(updatedCereal.Name, result.Name);
+        }
+    }
+
+    [TestMethod]
+    public async Task UpdateCereal_WithNonExistingId_ThrowsException() 
+    {
+        // Arrange
+        using (var context = GetTestDbContext("UpdateCereal_WithNonExistingId_ThrowsException"))
+        {
+            var repository = new CerealRepository(context);
+            var nonExistentId = Guid.NewGuid();
+            var updatedCereal = TestCereal1 with { Id = nonExistentId, Name = "Updated Cereal Name" };
+
+            // Act & Assert
+            await Assert.ThrowsAsync<Exception>(async () =>
+            {
+                await repository.UpdateCereal(nonExistentId, updatedCereal);
+            });
+        }
+    }
 }
