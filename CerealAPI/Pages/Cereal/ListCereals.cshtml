@@ -1,5 +1,6 @@
 ﻿@page
 @using Cereal_API.Models.Types
+@using Cereal_API.Pages.Shared
 @model Cereal_API.Pages.Cereal.ListCerealsModel
 
 @{
@@ -15,52 +16,52 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Cereal[0].Name)
+                @DisplayForCereal.GetDisplayName(Html.DisplayNameFor(model => model.Cereal[0].Name))
             </th>
             <th>
-                Manufacturer
+                @DisplayForCereal.GetDisplayName(Html.DisplayNameFor(model => model.Cereal[0].Mfr))
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Cereal[0].Type)
+                @DisplayForCereal.GetDisplayName(Html.DisplayNameFor(model => model.Cereal[0].Type))
             </th>
             <th>
-                Calories per serving
+                @DisplayForCereal.GetDisplayName(Html.DisplayNameFor(model => model.Cereal[0].Calories))
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Cereal[0].Protein)
+                @DisplayForCereal.GetDisplayName(Html.DisplayNameFor(model => model.Cereal[0].Protein))
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Cereal[0].Fat)
+                @DisplayForCereal.GetDisplayName(Html.DisplayNameFor(model => model.Cereal[0].Fat))
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Cereal[0].Sodium)
+                @DisplayForCereal.GetDisplayName(Html.DisplayNameFor(model => model.Cereal[0].Sodium))
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Cereal[0].Fiber)
+                @DisplayForCereal.GetDisplayName(Html.DisplayNameFor(model => model.Cereal[0].Fiber))
             </th>
             <th>
-                Carbohydrates
+                @DisplayForCereal.GetDisplayName(Html.DisplayNameFor(model => model.Cereal[0].Carbo))
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Cereal[0].Sugars)
+                @DisplayForCereal.GetDisplayName(Html.DisplayNameFor(model => model.Cereal[0].Sugars))
             </th>
             <th>
-                Potassium
+                @DisplayForCereal.GetDisplayName(Html.DisplayNameFor(model => model.Cereal[0].Potass))
             </th>
             <th>
-                Vitamins and Minerals
+                @DisplayForCereal.GetDisplayName(Html.DisplayNameFor(model => model.Cereal[0].Vitamins))
             </th>
             <th>
-                Display Shelf
+                @DisplayForCereal.GetDisplayName(Html.DisplayNameFor(model => model.Cereal[0].Shelf))
             </th>
             <th>
-                Weight per serving
+                @DisplayForCereal.GetDisplayName(Html.DisplayNameFor(model => model.Cereal[0].Weight))
             </th>
             <th>
-                Cups per serving
+                @DisplayForCereal.GetDisplayName(Html.DisplayNameFor(model => model.Cereal[0].Cups))
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Cereal[0].Rating)
+                @DisplayForCereal.GetDisplayName(Html.DisplayNameFor(model => model.Cereal[0].Rating))
             </th>
             <th></th>
         </tr>
@@ -72,46 +73,46 @@
                 <p>@(item.Name)</p>
             </td>
             <td>
-                <p>@(item.Mfr.GetFullNameFromType())</p>
+                <p>@DisplayForCereal.GetDisplayForMfr(item.Mfr)</p>
             </td>
             <td>
-                <p>@(item.Type.ToFullString())</p>
+                <p>@DisplayForCereal.GetDisplayForType(item.Type)</p>
             </td>
             <td>
-                <p>@(item.Calories)kcal</p>
+               <p>@(item.Calories + DisplayForCereal.GetMetricForNumberDisplay(Html.DisplayNameFor(model => model.Cereal[0].Calories)))</p>
             </td>
             <td>
-                <p>@(item.Protein)g</p>
+                <p>@(item.Protein + DisplayForCereal.GetMetricForNumberDisplay(Html.DisplayNameFor(model => model.Cereal[0].Protein)))</p>
             </td>
             <td>
-                <p>@(item.Fat)g</p>
+                <p>@(item.Fat + DisplayForCereal.GetMetricForNumberDisplay(Html.DisplayNameFor(model => model.Cereal[0].Fat)))</p>
             </td>
             <td>
-                <p>@(item.Sodium)mg</p>
+                <p>@(item.Sodium + DisplayForCereal.GetMetricForNumberDisplay(Html.DisplayNameFor(model => model.Cereal[0].Sodium)))</p>
             </td>
             <td>
-                <p>@(item.Fiber)g</p>
+                <p>@(item.Fiber + DisplayForCereal.GetMetricForNumberDisplay(Html.DisplayNameFor(model => model.Cereal[0].Fiber)))</p>
             </td>
             <td>
-                <p>@(item.Carbo)g</p>
+                <p>@(item.Carbo + DisplayForCereal.GetMetricForNumberDisplay(Html.DisplayNameFor(model => model.Cereal[0].Carbo)))</p>
             </td>
             <td>
-                <p>@(item.Sugars)g</p>
+                <p>@(item.Sugars + DisplayForCereal.GetMetricForNumberDisplay(Html.DisplayNameFor(model => model.Cereal[0].Sugars)))</p>
             </td>
             <td>
-                <p>@(item.Potass)mg</p>
+                <p>@(item.Potass + DisplayForCereal.GetMetricForNumberDisplay(Html.DisplayNameFor(model => model.Cereal[0].Potass)))</p>
             </td>
             <td>
-                <p>@(item.Vitamins.ToInt())%</p>
+                <p>@DisplayForCereal.GetDisplayForVitamins(item.Vitamins, Html.DisplayNameFor(model => model.Cereal[0].Vitamins))</p>
             </td>
             <td>
-                <p>@(item.Shelf.ToInt())</p>
+                <p>@DisplayForCereal.GetDisplayForShelf(item.Shelf)</p>
             </td>
             <td>
-                <p>@(item.Weight)oz</p>
+                <p>@(item.Weight + DisplayForCereal.GetMetricForNumberDisplay(Html.DisplayNameFor(model => model.Cereal[0].Weight)))</p>
             </td>
             <td>
-                <p>@(item.Cups)cups</p>
+                <p>@(item.Cups + DisplayForCereal.GetMetricForNumberDisplay(Html.DisplayNameFor(model => model.Cereal[0].Cups)))</p>
             </td>
             <td>
                 <p>@(item.Rating)</p>
