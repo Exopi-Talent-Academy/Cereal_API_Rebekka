@@ -11,6 +11,9 @@ public enum HotOrColdType
 
 public static class HotOrColdTypeExtensions
 {
+    private readonly static string HotString = "Hot";
+    private readonly static string ColdString = "Cold";
+
     /// <summary>
     /// Converts the specified string to its corresponding HotOrColdType enumeration value.
     /// </summary>
@@ -39,9 +42,27 @@ public static class HotOrColdTypeExtensions
     {
         return type switch
         {
-            HotOrColdType.H => "Hot",
-            HotOrColdType.C => "Cold",
+            HotOrColdType.H => HotString,
+            HotOrColdType.C => ColdString,
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+        };
+    }
+
+    /// <summary>
+    /// Converts the specified string representation of a hot or cold type to its corresponding full-word string representation. Accepts "H", "C", "Hot", or "Cold".
+    /// </summary>
+    /// <param name="type">The string representation of the hot or cold type.</param>
+    /// <returns>The full-word string representation of the specified hot or cold type.</returns>
+    /// <exception cref="ArgumentException">Thrown when the specified value does not correspond to a valid HotOrColdType.</exception>
+    public static string ToFullString(this string type)
+    {
+        return type.ToUpper().Trim() switch
+        {
+            "H" => HotString,
+            "C" => ColdString,
+            "HOT" => HotString,
+            "COLD" => ColdString,
+            _ => throw new ArgumentException($"Invalid HotOrColdType value: {type}")
         };
     }
 }

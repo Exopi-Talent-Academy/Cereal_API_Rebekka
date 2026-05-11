@@ -1,11 +1,14 @@
 ﻿@page
+@using Cereal_API.Models.Types;
+@using Cereal_API.Pages.Shared;
+@using Cereal_API.Pages.Cereal;
 @model Cereal_API.Pages.Cereal.CreateCerealModel
 
-        @{
-        ViewData["Title"] = "CreateCereal";
-        }
+@{
+ViewData["Title"] = "Create new Cereal";
+}
         
-        <h1>CreateCereal</h1>
+<h1>Create a new Cereal</h1>
         
     <h4>Cereal</h4>
     <hr />
@@ -15,17 +18,29 @@
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Cereal.Name" class="control-label"></label>
-                <input asp-for="Cereal.Name" class="form-control" />
+                <input asp-for="Cereal.Name" class="form-control" required />
                 <span asp-validation-for="Cereal.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Cereal.Mfr" class="control-label"></label>
-                <select asp-for="Cereal.Mfr" class="form-control" ></select>
+                <label asp-for="Cereal.Mfr" class="control-label">@DisplayForCereal.GetDisplayName("Mfr")</label>
+                <select asp-for="Cereal.Mfr" 
+                        class="dropdown"
+                        asp-items="Html.GetEnumSelectList<Manufacturers>()
+                                       .Select(e => new SelectListItem { Text = e.Text.GetFullNameFromString(), Value = e.Value })
+                                       .OrderBy(e => e.Text)"
+                        required
+                        style="display: block; width: 100%; padding: .375rem .75rem; font-size: 1rem; font-weight: 400; line-height: 1.5; color: var(--bs-body-color); border: var(--bs-border-width) solid var(--bs-border-color); border-radius: var(--bs-border-radius)"></select>
+                        <!-- this above styling should be moved to a style sheet, but for now, it works -->
                 <span asp-validation-for="Cereal.Mfr" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Cereal.Type" class="control-label"></label>
-                <select asp-for="Cereal.Type" class="form-control" ></select>
+                <select asp-for="Cereal.Type" 
+                        class="form-control" 
+                        asp-items="Html.GetEnumSelectList<HotOrColdType>()
+                                       .Select(e => new SelectListItem { Text = e.Text.ToFullString(), Value = e.Value })
+                                       .OrderBy(e => e.Text)"
+                        required></select>
                 <span asp-validation-for="Cereal.Type" class="text-danger"></span>
             </div>
             <div class="form-group">
