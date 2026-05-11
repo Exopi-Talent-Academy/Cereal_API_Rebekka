@@ -1,21 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Cereal_API.Controllers;
+using Cereal_API.Models;
+using Cereal_API.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Cereal_API.Models;
 
 namespace Cereal_API.Pages.Cereal;
 
 public class CreateCerealModel : PageModel
 {
-    private readonly Cereal_API.Models.CerealDbContext _context;
+    private readonly CerealController _controller;
 
-    public CreateCerealModel(Cereal_API.Models.CerealDbContext context)
+    public CreateCerealModel(ICerealRepository repository)
     {
-        _context = context;
+        _controller = new CerealController(repository);
     }
 
     public IActionResult OnGet()
@@ -24,7 +21,7 @@ public class CreateCerealModel : PageModel
     }
 
     [BindProperty]
-    public Cereal_API.Models.Cereal Cereal { get; set; } = default!;
+    public Models.Cereal Cereal { get; set; } = default!;
 
     // For more information, see https://aka.ms/RazorPagesCRUD.
     public async Task<IActionResult> OnPostAsync()
@@ -34,9 +31,8 @@ public class CreateCerealModel : PageModel
             return Page();
         }
 
-        _context.Cereals.Add(Cereal);
-        await _context.SaveChangesAsync();
+        await _controller.PostCereal(Cereal);
 
-        return RedirectToPage("./Index");
+        return RedirectToPage("./ListCereals");
     }
 }

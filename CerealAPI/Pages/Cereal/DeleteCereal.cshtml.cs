@@ -1,38 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Cereal_API.Controllers;
+using Cereal_API.Models;
+using Cereal_API.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using Cereal_API.Models;
 
 namespace Cereal_API.Pages.Cereal;
 
 public class DeleteCerealModel : PageModel
 {
-    private readonly Cereal_API.Models.CerealDbContext _context;
+    private readonly CerealController _controller;
 
-    public DeleteCerealModel(Cereal_API.Models.CerealDbContext context)
+    public DeleteCerealModel(ICerealRepository repository)
     {
-        _context = context;
+        _controller = new CerealController(repository);
     }
 
     [BindProperty]
-    public Cereal_API.Models.Cereal Cereal { get; set; } = default!;
+    public Models.Cereal Cereal { get; set; } = default!;
 
     public async Task<IActionResult> OnGetAsync(Guid? id)
     {
+        // Exact same method as DetailsCereal, need to find a way to make a shared method
         if (id == null)
         {
             return NotFound();
         }
 
-        var cereal = await _context.Cereals.FirstOrDefaultAsync(m => m.Id == id);
+        var cereal = await _controller.GetCereal(id.Value);
 
         if (cereal is not null)
         {
-            Cereal = cereal;
+            Cereal = cereal.Value!;
 
             return Page();
         }
@@ -47,14 +45,8 @@ public class DeleteCerealModel : PageModel
             return NotFound();
         }
 
-        var cereal = await _context.Cereals.FindAsync(id);
-        if (cereal != null)
-        {
-            Cereal = cereal;
-            _context.Cereals.Remove(Cereal);
-            await _context.SaveChangesAsync();
-        }
+        await _controller.DeleteCereal(id.Value);
 
-        return RedirectToPage("./Index");
+        return RedirectToPage("./ListCereals");
     }
 }

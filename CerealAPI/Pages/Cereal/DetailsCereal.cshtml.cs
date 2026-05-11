@@ -1,37 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Cereal_API.Controllers;
+using Cereal_API.Models;
+using Cereal_API.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using Cereal_API.Models;
 
 namespace Cereal_API.Pages.Cereal;
 
 public class DetailsCerealModel : PageModel
 {
-    private readonly Cereal_API.Models.CerealDbContext _context;
+    private readonly CerealController _controller;
 
-    public DetailsCerealModel(Cereal_API.Models.CerealDbContext context)
+    public DetailsCerealModel(ICerealRepository repository)
     {
-        _context = context;
+        _controller = new CerealController(repository);
     }
 
-    public Cereal_API.Models.Cereal Cereal { get; set; } = default!;
+    public Models.Cereal Cereal { get; set; } = default!;
 
     public async Task<IActionResult> OnGetAsync(Guid? id)
     {
+        // Exact same method as DeleteCereal and EditCereal, need to find a way to make a shared method
         if (id == null)
         {
             return NotFound();
         }
 
-        var cereal = await _context.Cereals.FirstOrDefaultAsync(m => m.Id == id);
+        var cereal = await _controller.GetCereal(id.Value);
 
         if (cereal is not null)
         {
-            Cereal = cereal;
+            Cereal = cereal.Value!;
 
             return Page();
         }
