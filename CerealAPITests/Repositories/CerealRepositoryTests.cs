@@ -224,4 +224,39 @@ public sealed class CerealRepositoryTests
             });
         }
     }
+
+    [TestMethod]
+    public async Task DeleteCereal_WithExistingId_DeletesFromDatabase() 
+    {
+        // Arrange
+        using (var context = GetTestDbContext("DeleteCereal_WithExistingId_DeletesFromDatabase"))
+        {
+            var repository = new CerealRepository(context);
+
+            // Act
+            var result = await repository.DeleteCereal(TestCereal1.Id);
+
+            // Assert
+            Assert.IsTrue(result);
+            var deletedCereal = await context.Cereals.FindAsync(TestCereal1.Id);
+            Assert.IsNull(deletedCereal);
+        }
+    }
+
+    [TestMethod]
+    public async Task DeleteCereal_WithNonExistingId_ThrowsException() 
+    {
+        // Arrange
+        using (var context = GetTestDbContext("DeleteCereal_WithNonExistingId_ThrowsException"))
+        {
+            var repository = new CerealRepository(context);
+            var nonExistentId = Guid.NewGuid();
+
+            // Act & Assert
+            await Assert.ThrowsAsync<Exception>(async () =>
+            {
+                await repository.DeleteCereal(nonExistentId);
+            });
+        }
+    }
 }

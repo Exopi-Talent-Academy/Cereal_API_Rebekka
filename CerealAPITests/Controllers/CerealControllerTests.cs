@@ -220,4 +220,54 @@ public sealed class CerealControllerTests
         // Assert
         Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
     }
+
+    [TestMethod]
+    public async Task DeleteCereal_WithValidId_DeletesCereal()
+    {
+        // Arrange
+        var mockRepo = new Mock<ICerealRepository>();
+        var existingCerealId = TestCereal1.Id;
+        mockRepo.Setup(repo => repo.CerealExists(existingCerealId)).Returns(true);
+        mockRepo.Setup(repo => repo.DeleteCereal(existingCerealId)).Returns(Task.FromResult(true));
+        var controller = new CerealController(mockRepo.Object);
+
+        // Act
+        var result = await controller.DeleteCereal(existingCerealId);
+
+        // Assert
+        Assert.IsInstanceOfType(result, typeof(NoContentResult));
+    }
+
+    [TestMethod]
+    public async Task DeleteCereal_WithNonExistentId_ReturnsNotFound()
+    {
+        // Arrange
+        var mockRepo = new Mock<ICerealRepository>();
+        var nonExistentCerealId = Guid.NewGuid();
+        mockRepo.Setup(repo => repo.CerealExists(nonExistentCerealId)).Returns(false);
+        var controller = new CerealController(mockRepo.Object);
+
+        // Act
+        var result = await controller.DeleteCereal(nonExistentCerealId);
+
+        // Assert
+        Assert.IsInstanceOfType(result, typeof(NotFoundObjectResult));
+    }
+
+    [TestMethod]
+    public async Task DeleteCereal_WhenExceptionThrown_ReturnsBadRequest()
+    {
+        // Arrange
+        var mockRepo = new Mock<ICerealRepository>();
+        var existingCerealId = TestCereal1.Id;
+        mockRepo.Setup(repo => repo.CerealExists(existingCerealId)).Returns(true);
+        mockRepo.Setup(repo => repo.DeleteCereal(existingCerealId)).ThrowsAsync(new Exception("Database error"));
+        var controller = new CerealController(mockRepo.Object);
+
+        // Act
+        var result = await controller.DeleteCereal(existingCerealId);
+
+        // Assert
+        Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
+    }
 }

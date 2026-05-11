@@ -26,6 +26,8 @@ public class CreateCerealModel : PageModel
     // For more information, see https://aka.ms/RazorPagesCRUD.
     public async Task<IActionResult> OnPostAsync()
     {
+        // need to do some validation and parsing here
+
         if (!ModelState.IsValid)
         {
             return Page();

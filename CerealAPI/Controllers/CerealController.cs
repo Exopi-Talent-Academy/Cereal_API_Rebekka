@@ -10,6 +10,10 @@ public class CerealController : Controller
 {
     private readonly ICerealRepository _cerealRepository;
 
+    /// <summary>
+    /// Initializes a new instance of the CerealController class using the specified cereal repository.
+    /// </summary>
+    /// <param name="cerealRepository">The repository used to access and manage cereal data. Cannot be null.</param>
     public CerealController(ICerealRepository cerealRepository)
     {
         _cerealRepository = cerealRepository;
@@ -96,17 +100,19 @@ public class CerealController : Controller
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteCereal(Guid id)
     {
-        throw new NotImplementedException();
-        // all code given by template, should probably be moved to CerealRepository
-        //var cereal = await _context.Cereals.FindAsync(id);
-        //if (cereal == null)
-        //{
-        //    return NotFound();
-        //}
+        if (!_cerealRepository.CerealExists(id))
+        {
+            return NotFound("Cereal not found.");
+        }
 
-        //_context.Cereals.Remove(cereal);
-        //await _context.SaveChangesAsync();
-
-        //return NoContent();
+        try
+        {
+            await _cerealRepository.DeleteCereal(id);
+            return NoContent();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 }
