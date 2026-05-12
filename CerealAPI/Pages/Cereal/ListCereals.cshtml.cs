@@ -18,6 +18,7 @@ public class ListCerealsModel : PageModel
 
     public async Task OnGetAsync()
     {
+        //should take some inputs that determines how the cereals are sorted, filtered, etc. but for now just return all cereals ordered by name
         var ok = await _controller.GetCereals();
         var cereals = (ok.Result as ViewResult)?.Model as IEnumerable<Models.Cereal>;
         Cereal = cereals!.OrderBy(c => c.Name).ToList();

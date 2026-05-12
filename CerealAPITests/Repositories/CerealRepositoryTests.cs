@@ -2,6 +2,7 @@
 using Cereal_API.Models.Types;
 using Cereal_API.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 
 namespace Cereal_API.Tests.Repositories;
 
@@ -149,6 +150,103 @@ public sealed class CerealRepositoryTests
             await Assert.ThrowsAsync<Exception>(async () =>
             {
                 await repository.GetAllCereals();
+            });
+        }
+    }
+
+    [TestMethod]
+    [DataRow("Calories", "3", 2)]
+    [DataRow("Vitamins", "50", 1)]
+    public async Task GetFilteredCereals_ForGreaterThan_ReturnsFilteredCereals(string category, string value, int expectedCount)
+    {
+        // Arrange
+        using (var context = GetTestDbContext("GetFilteredCereals_ForGreaterThan_ReturnsSortedCereals" + category))
+        {
+            var repository = new CerealRepository(context);
+
+            // Act
+            var result = await repository.GetFilteredCereals(category, OperatorType.GreaterThan, value);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(expectedCount, result.Count());
+            var propertyInfo = typeof(Cereal).GetProperty(category);
+            Assert.IsTrue(result.All(c => (int)propertyInfo!.GetValue(c)! > int.Parse(value)));
+        }
+    }
+
+    [TestMethod]
+    [DataRow("Type", "C", 2)]
+    [DataRow("Type", "H", 1)]
+    public async Task GetFilteredCereals_ForEqualsType_ReturnsFilteredCereals(string category, string value, int expectedCount)
+    {
+        // Arrange
+        using (var context = GetTestDbContext("GetFilteredCereals_ForEqualsType_ReturnsFilteredCereals" + value))
+        {
+            var repository = new CerealRepository(context);
+
+            // Act
+            var result = await repository.GetFilteredCereals(category, OperatorType.Equals, value);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(expectedCount, result.Count());
+            var propertyInfo = typeof(Cereal).GetProperty(category);
+            Assert.IsTrue(result.All(c => propertyInfo!.GetValue(c)!.ToString() == value));
+        }
+    }
+
+    [TestMethod]
+    public async Task GetFilteredCereals_WhenGivenNonExistingCategory_ThrowsException()
+    {
+        string nonExistingCategory = "Milk";
+
+        // Arrange
+        using (var context = GetTestDbContext("GetFilteredCereals_WhenGivenNonExistingCategory_ThrowsException"))
+        {
+            var repository = new CerealRepository(context);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<Exception>(async () =>
+            {
+                await repository.GetFilteredCereals(nonExistingCategory, default, "0.4");
+            });
+        }
+    }
+
+    [TestMethod]
+    [DataRow("Name", OperatorType.SmallerThan, "Cheese")]
+    [DataRow("Mfr", OperatorType.GreaterThanOrEqual, "K")]
+    public async Task GetFilteredCereals_WhenGivenNonEqualsOrNotEqualsForString_ThrowsException(string category, OperatorType operation, string value)
+    {
+        // Arrange
+        using (var context = GetTestDbContext("GetFilteredCereals_WhenGivenNonEqualsOrNotEqualsForString_ThrowsException" + category))
+        {
+            var repository = new CerealRepository(context);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<Exception>(async () =>
+            {
+                await repository.GetFilteredCereals(category, operation, value);
+            });
+        }
+    }
+
+    [TestMethod]
+    [DataRow("Protein", OperatorType.Equals, "testing123")]
+    [DataRow("Shelf", OperatorType.SmallerThan, "I love ramen")]
+    [DataRow("Rating", OperatorType.GreaterThan, "6.7 is a numbaaaaa")]
+    public async Task GetFilteredCereal_WhenGivenTextForNumber_ThrowsException(string category, OperatorType operation, string value)
+    {
+        // Arrange
+        using (var context = GetTestDbContext("GetFilteredCereals_WhenGivenTextForNumber_ThrowsException" + category))
+        {
+            var repository = new CerealRepository(context);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<Exception>(async () =>
+            {
+                await repository.GetFilteredCereals(category, operation, value);
             });
         }
     }

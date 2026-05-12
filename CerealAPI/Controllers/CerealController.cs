@@ -23,6 +23,7 @@ public class CerealController : Controller
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Cereal>>> GetCereals()
     {
+        // should take some inputs that determines how the cereals are filtered so it can pass them to the repository method
         try
         {
             var cereals = await _cerealRepository.GetAllCereals();
