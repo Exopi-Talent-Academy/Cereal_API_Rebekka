@@ -29,7 +29,7 @@ public static class VitaminAndMineralsTypeExtensions
     /// values are supported.</remarks>
     /// <param name="value">The string representation of the vitamin and minerals type to convert. The value is case-insensitive and may
     /// include numeric or textual representations such as "0", "25", "100", "Zero", "TwentyFive", or "OneHundred".</param>
-    /// <returns>The VitaminAndMineralsType value that corresponds to the specified string.</returns>
+    /// <returns>The VitaminAndMineralsType value that corresponds to the specified string representation of the VitaminsAndMineralsType.</returns>
     /// <exception cref="ArgumentOutOfRangeException">Thrown when the specified value does not correspond to a valid VitaminAndMineralsType.</exception>
     public static VitaminAndMineralsType FromString(this string value)
     {
@@ -44,6 +44,30 @@ public static class VitaminAndMineralsTypeExtensions
             "TWENTY FIVE" => VitaminAndMineralsType.TwentyFive,
             "ONE HUNDRED" => VitaminAndMineralsType.OneHundred,
             "HUNDRED" => VitaminAndMineralsType.OneHundred,
+            _ => throw new ArgumentOutOfRangeException(nameof(value), $"Value {value} is not a valid VitaminAndMineralsType")
+        };
+    }
+
+    /// <summary>
+    /// Turns the specified string to its corresponding integer value based on the VitaminAndMineralsType enumeration.
+    /// </summary>
+    /// <param name="value">The string representation of the vitamin and minerals type. Accepts numeric values ("0", "25", "100") or their
+    /// case-insensitive word equivalents ("Zero", "TwentyFive", "OneHundred").</param>
+    /// <returns>The integer that corresponds to the specified string.</returns>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    public static int ToInt(this string value)
+    {
+        return value.ToUpper().Trim() switch
+        {
+            "0" => VitaminAndMineralsType.Zero.ToInt(),
+            "25" => VitaminAndMineralsType.TwentyFive.ToInt(),
+            "100" => VitaminAndMineralsType.OneHundred.ToInt(),
+            "ZERO" => VitaminAndMineralsType.Zero.ToInt(),
+            "TWENTYFIVE" => VitaminAndMineralsType.TwentyFive.ToInt(),
+            "ONEHUNDRED" => VitaminAndMineralsType.OneHundred.ToInt(),
+            "TWENTY FIVE" => VitaminAndMineralsType.TwentyFive.ToInt(),
+            "ONE HUNDRED" => VitaminAndMineralsType.OneHundred.ToInt(),
+            "HUNDRED" => VitaminAndMineralsType.OneHundred.ToInt(),
             _ => throw new ArgumentOutOfRangeException(nameof(value), $"Value {value} is not a valid VitaminAndMineralsType")
         };
     }

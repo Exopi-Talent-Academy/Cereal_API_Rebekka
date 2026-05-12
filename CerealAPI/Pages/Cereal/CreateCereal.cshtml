@@ -34,7 +34,7 @@ ViewData["Title"] = "Create new Cereal";
                 <span asp-validation-for="Cereal.Mfr" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Cereal.Type" class="control-label"></label>
+                <label asp-for="Cereal.Type" class="control-label">@DisplayForCereal.GetDisplayName("Type")</label>
                 <select asp-for="Cereal.Type" 
                         class="form-control" 
                         asp-items="Html.GetEnumSelectList<HotOrColdType>()
@@ -44,67 +44,75 @@ ViewData["Title"] = "Create new Cereal";
                 <span asp-validation-for="Cereal.Type" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Cereal.Calories" class="control-label"></label>
+                <label asp-for="Cereal.Calories" class="control-label">@DisplayForCereal.GetDisplayName("Calories")</label>
                 <input asp-for="Cereal.Calories" class="form-control" />
                 <span asp-validation-for="Cereal.Calories" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Cereal.Protein" class="control-label"></label>
+                <label asp-for="Cereal.Protein" class="control-label">@DisplayForCereal.GetDisplayName("Protein")</label>
                 <input asp-for="Cereal.Protein" class="form-control" />
                 <span asp-validation-for="Cereal.Protein" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Cereal.Fat" class="control-label"></label>
+                <label asp-for="Cereal.Fat" class="control-label">@DisplayForCereal.GetDisplayName("Fat")</label>
                 <input asp-for="Cereal.Fat" class="form-control" />
                 <span asp-validation-for="Cereal.Fat" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Cereal.Sodium" class="control-label"></label>
+                <label asp-for="Cereal.Sodium" class="control-label">@DisplayForCereal.GetDisplayName("Sodium")</label>
                 <input asp-for="Cereal.Sodium" class="form-control" />
                 <span asp-validation-for="Cereal.Sodium" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Cereal.Fiber" class="control-label"></label>
+                <label asp-for="Cereal.Fiber" class="control-label">@DisplayForCereal.GetDisplayName("Fiber")</label>
                 <input asp-for="Cereal.Fiber" class="form-control" />
                 <span asp-validation-for="Cereal.Fiber" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Cereal.Carbo" class="control-label"></label>
+                <label asp-for="Cereal.Carbo" class="control-label">@DisplayForCereal.GetDisplayName("Carbo")</label>
                 <input asp-for="Cereal.Carbo" class="form-control" />
                 <span asp-validation-for="Cereal.Carbo" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Cereal.Sugars" class="control-label"></label>
+                <label asp-for="Cereal.Sugars" class="control-label">@DisplayForCereal.GetDisplayName("Sugars")</label>
                 <input asp-for="Cereal.Sugars" class="form-control" />
                 <span asp-validation-for="Cereal.Sugars" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Cereal.Potass" class="control-label"></label>
+                <label asp-for="Cereal.Potass" class="control-label">@DisplayForCereal.GetDisplayName("Potass")</label>
                 <input asp-for="Cereal.Potass" class="form-control" />
                 <span asp-validation-for="Cereal.Potass" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Cereal.Vitamins" class="control-label"></label>
-                <select asp-for="Cereal.Vitamins" class="form-control" ></select>
+                <label asp-for="Cereal.Vitamins" class="control-label">@DisplayForCereal.GetDisplayName("Vitamins")</label>
+                <select asp-for="Cereal.Vitamins" 
+                        class="form-control"
+                        asp-items="Html.GetEnumSelectList<VitaminAndMineralsType>()
+                                       .Select(e => new SelectListItem { Text = (e.Text.ToInt() + @DisplayForCereal.GetMetricForNumberDisplay("vitamins")), Value = e.Value })
+                                  "></select>
                 <span asp-validation-for="Cereal.Vitamins" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Cereal.Shelf" class="control-label"></label>
-                <select asp-for="Cereal.Shelf" class="form-control" ></select>
+                <label asp-for="Cereal.Shelf" class="control-label">@DisplayForCereal.GetDisplayName("Shelf")</label>
+                <select asp-for="Cereal.Shelf" 
+                        class="form-control"
+                        asp-items="Html.GetEnumSelectList<DisplayShelfType>()
+                                       .Select(e => new SelectListItem { Text = e.Text.FromStringToInt().ToString(), Value = e.Value })
+                                       .OrderBy(e => e.Text)"></select>
                 <span asp-validation-for="Cereal.Shelf" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Cereal.Weight" class="control-label"></label>
+                <label asp-for="Cereal.Weight" class="control-label">@DisplayForCereal.GetDisplayName("Weight")</label>
                 <input asp-for="Cereal.Weight" class="form-control" />
                 <span asp-validation-for="Cereal.Weight" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Cereal.Cups" class="control-label"></label>
+                <label asp-for="Cereal.Cups" class="control-label">@DisplayForCereal.GetDisplayName("Cups")</label>
                 <input asp-for="Cereal.Cups" class="form-control" />
                 <span asp-validation-for="Cereal.Cups" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Cereal.Rating" class="control-label"></label>
+                <label asp-for="Cereal.Rating" class="control-label">@DisplayForCereal.GetDisplayName("Rating")</label>
                 <input asp-for="Cereal.Rating" class="form-control" />
                 <span asp-validation-for="Cereal.Rating" class="text-danger"></span>
             </div>

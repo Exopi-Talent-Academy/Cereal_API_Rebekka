@@ -23,6 +23,27 @@ public static class DisplayShelfTypeExtensions
     }
 
     /// <summary>
+    /// Turns the specified string representation of a display shelf type to its corresponding integer value.
+    /// </summary>
+    /// <param name="value">The string representation of the display shelf type. Accepts numeric values ("1", "2", "3") or their
+    /// case-insensitive word equivalents ("One", "Two", "Three").</param>
+    /// <returns>The integer value corresponding to the specified string representation of the display shelf type.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">Thrown when the specified value does not correspond to a valid DisplayShelfType.</exception>
+    public static int FromStringToInt(this string value)
+    {
+        return value.ToUpper().Trim() switch
+        {
+            "1" => DisplayShelfType.One.ToInt(),
+            "2" => DisplayShelfType.Two.ToInt(),
+            "3" => DisplayShelfType.Three.ToInt(),
+            "ONE" => DisplayShelfType.One.ToInt(),
+            "TWO" => DisplayShelfType.Two.ToInt(),
+            "THREE" => DisplayShelfType.Three.ToInt(),
+            _ => throw new ArgumentOutOfRangeException(nameof(value), $"Value {value} is not a valid DisplayShelfType")
+        };
+    }
+
+    /// <summary>
     /// Converts the specified string to its corresponding DisplayShelfType enumeration value.
     /// </summary>
     /// <remarks>The comparison is case-insensitive and ignores leading and trailing whitespace.</remarks>
