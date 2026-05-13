@@ -1,6 +1,7 @@
 ﻿using Cereal_API.Models;
 using Cereal_API.Models.Types;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Cereal_API.Repositories;
 
@@ -57,159 +58,256 @@ public class CerealRepository : ICerealRepository
         return cereals;
     }
 
+    // Method that was coded by me and my brain. It works and passes the tests, but felt like there had to be a better way
+    //public async Task<IEnumerable<Cereal>> GetFilteredCereals(string category, OperatorType operation, string value)
+    //{
+    //    var propertyInfo = typeof(Cereal).GetProperty(category);
+    //    if (propertyInfo == null)
+    //    {
+    //        throw new Exception($"Category '{category}' does not exist.");
+    //    }
+
+    //    // This big if-block handles strings and the two enums that are essentially strings
+    //    if (propertyInfo.PropertyType == typeof(string) || propertyInfo.PropertyType == typeof(Manufacturers) || propertyInfo.PropertyType == typeof(HotOrColdType))
+    //    {
+    //        if (operation != OperatorType.Equals && operation != OperatorType.NotEquals)
+    //        {
+    //            throw new Exception($"Invalid operator for '{category}' category. Only = and != are allowed.");
+    //        }
+
+    //        if (propertyInfo.PropertyType != typeof(string))
+    //        {
+    //            if (!Enum.TryParse(propertyInfo.PropertyType, value, true, out var enumValue))
+    //            {
+    //                throw new Exception($"Invalid value for '{category}' category. Allowed values are: {string.Join(", ", Enum.GetNames(propertyInfo.PropertyType))}.");
+    //            }
+
+    //            if (propertyInfo.PropertyType == typeof(Manufacturers))
+    //            {
+    //                var mfr = default(Manufacturers);
+
+    //                try
+    //                {
+    //                    mfr = (Manufacturers)enumValue;
+    //                }
+    //                catch (Exception)
+    //                {
+    //                    throw new Exception($"Invalid value for '{category}' category. Allowed values are: {string.Join(", ", Enum.GetNames(typeof(Manufacturers)))}.");
+    //                }
+
+    //                return operation switch
+    //                {
+    //                    OperatorType.Equals => await _context.Cereals.Where(c => EF.Property<Manufacturers>(c, category) == mfr).ToListAsync(),
+    //                    OperatorType.NotEquals => await _context.Cereals.Where(c => EF.Property<Manufacturers>(c, category) != mfr).ToListAsync(),
+    //                    _ => throw new Exception("Invalid operator.")
+    //                };
+    //            }
+    //            else if (propertyInfo.PropertyType == typeof(HotOrColdType))
+    //            {
+    //                var type = default(HotOrColdType);
+
+    //                try
+    //                {
+    //                    type = (HotOrColdType)enumValue;
+    //                }
+    //                catch (Exception)
+    //                {
+    //                    throw new Exception($"Invalid value for '{category}' category. Allowed values are: {string.Join(", ", Enum.GetNames(typeof(HotOrColdType)))}.");
+    //                }
+
+    //                return operation switch
+    //                {
+    //                    OperatorType.Equals => await _context.Cereals.Where(c => EF.Property<HotOrColdType>(c, category) == type).ToListAsync(),
+    //                    OperatorType.NotEquals => await _context.Cereals.Where(c => EF.Property<HotOrColdType>(c, category) != type).ToListAsync(),
+    //                    _ => throw new Exception("Invalid operator.")
+    //                };
+    //            }
+    //        }
+
+    //        // this is just for the name for now and I'm pretty sure it only allows a case-insensitive exact match. Should probably be more flexible than that
+    //        return operation switch
+    //        {
+    //            OperatorType.Equals => await _context.Cereals.Where(c => EF.Property<string>(c, category).Equals(value, StringComparison.OrdinalIgnoreCase)).ToListAsync(),
+    //            OperatorType.NotEquals => await _context.Cereals.Where(c => !EF.Property<string>(c, category).Equals(value, StringComparison.OrdinalIgnoreCase)).ToListAsync(),
+    //            _ => throw new Exception("Invalid operator.")
+    //        };
+    //    }
+
+
+    //    // After this block, we go through the remainder which are all numeric types or integer-based enums
+
+
+    //    if (propertyInfo.PropertyType == typeof(VitaminAndMineralsType))
+    //    {
+    //        // should it also accept doubles and have that comparison happen?
+    //        if (!int.TryParse(value, out var intVal))
+    //        {
+    //            throw new Exception($"Invalid value for '{category}' category. Allowed values are integers only.");
+    //        }
+
+    //        return operation switch
+    //        {
+    //            OperatorType.Equals => await _context.Cereals.Where(c => EF.Property<VitaminAndMineralsType>(c, category).ToInt() == intVal).ToListAsync(),
+    //            OperatorType.NotEquals => await _context.Cereals.Where(c => EF.Property<VitaminAndMineralsType>(c, category).ToInt() != intVal).ToListAsync(),
+    //            OperatorType.GreaterThan => await _context.Cereals.Where(c => EF.Property<VitaminAndMineralsType>(c, category).ToInt() > intVal).ToListAsync(),
+    //            OperatorType.SmallerThan => await _context.Cereals.Where(c => EF.Property<VitaminAndMineralsType>(c, category).ToInt() < intVal).ToListAsync(),
+    //            OperatorType.GreaterThanOrEqual => await _context.Cereals.Where(c => EF.Property<VitaminAndMineralsType>(c, category).ToInt() >= intVal).ToListAsync(),
+    //            OperatorType.SmallerThanOrEqual => await _context.Cereals.Where(c => EF.Property<VitaminAndMineralsType>(c, category).ToInt() <= intVal).ToListAsync(),
+    //            _ => throw new Exception("Invalid operator.")
+    //        };
+    //    }
+
+    //    if (propertyInfo.PropertyType == typeof(DisplayShelfType))
+    //    {
+    //        // should it also accept doubles and have that comparison happen?
+    //        if (!int.TryParse(value, out var intVal))
+    //        {
+    //            throw new Exception($"Invalid value for '{category}' category. Allowed values are integers only.");
+    //        }
+
+    //        return operation switch
+    //        {
+    //            OperatorType.Equals => await _context.Cereals.Where(c => EF.Property<DisplayShelfType>(c, category).ToInt() == intVal).ToListAsync(),
+    //            OperatorType.NotEquals => await _context.Cereals.Where(c => EF.Property<DisplayShelfType>(c, category).ToInt() != intVal).ToListAsync(),
+    //            OperatorType.GreaterThan => await _context.Cereals.Where(c => EF.Property<DisplayShelfType>(c, category).ToInt() > intVal).ToListAsync(),
+    //            OperatorType.SmallerThan => await _context.Cereals.Where(c => EF.Property<DisplayShelfType>(c, category).ToInt() < intVal).ToListAsync(),
+    //            OperatorType.GreaterThanOrEqual => await _context.Cereals.Where(c => EF.Property<DisplayShelfType>(c, category).ToInt() >= intVal).ToListAsync(),
+    //            OperatorType.SmallerThanOrEqual => await _context.Cereals.Where(c => EF.Property<DisplayShelfType>(c, category).ToInt() <= intVal).ToListAsync(),
+    //            _ => throw new Exception("Invalid operator.")
+    //        };
+    //    }
+
+    //    if (propertyInfo.PropertyType == typeof(int))
+    //    {
+    //        // should it also accept doubles and have that comparison happen?
+    //        if (!int.TryParse(value, out var intVal))
+    //        {
+    //            throw new Exception($"Invalid value for '{category}' category. Allowed values are integers only.");
+    //        }
+
+    //        return operation switch
+    //        {
+    //            OperatorType.Equals => await _context.Cereals.Where(c => EF.Property<int>(c, category) == intVal).ToListAsync(),
+    //            OperatorType.NotEquals => await _context.Cereals.Where(c => EF.Property<int>(c, category) != intVal).ToListAsync(),
+    //            OperatorType.GreaterThan => await _context.Cereals.Where(c => EF.Property<int>(c, category) > intVal).ToListAsync(),
+    //            OperatorType.SmallerThan => await _context.Cereals.Where(c => EF.Property<int>(c, category) < intVal).ToListAsync(),
+    //            OperatorType.GreaterThanOrEqual => await _context.Cereals.Where(c => EF.Property<int>(c, category) >= intVal).ToListAsync(),
+    //            OperatorType.SmallerThanOrEqual => await _context.Cereals.Where(c => EF.Property<int>(c, category) <= intVal).ToListAsync(),
+    //            _ => throw new Exception("Invalid operator.")
+    //        };
+    //    }
+
+    //    if (propertyInfo.PropertyType == typeof(double))
+    //    {
+    //        if (!double.TryParse(value, out var doubleVal))
+    //        {
+    //            throw new Exception($"Invalid value for '{category}' category. Allowed values are doubles only.");
+    //        }
+
+    //        return operation switch
+    //        {
+    //            OperatorType.Equals => await _context.Cereals.Where(c => EF.Property<double>(c, category) == doubleVal).ToListAsync(),
+    //            OperatorType.NotEquals => await _context.Cereals.Where(c => EF.Property<double>(c, category) != doubleVal).ToListAsync(),
+    //            OperatorType.GreaterThan => await _context.Cereals.Where(c => EF.Property<double>(c, category) > doubleVal).ToListAsync(),
+    //            OperatorType.SmallerThan => await _context.Cereals.Where(c => EF.Property<double>(c, category) < doubleVal).ToListAsync(),
+    //            OperatorType.GreaterThanOrEqual => await _context.Cereals.Where(c => EF.Property<double>(c, category) >= doubleVal).ToListAsync(),
+    //            OperatorType.SmallerThanOrEqual => await _context.Cereals.Where(c => EF.Property<double>(c, category) <= doubleVal).ToListAsync(),
+    //            _ => throw new Exception("Invalid operator.")
+    //        };
+    //    }
+
+    //    // it should never reach this point because all property types are covered
+    //    throw new Exception($"Dude, how did you get here? Seriously.");
+    //}
+
+    /// <summary>
+    /// Gets all cereals that fits into the specific filter applied.
+    /// </summary>
+    /// <param name="category">The category to apply the filter to. It accepts the properties of Cereal, for example "Name" or "Vitamins".</param>
+    /// <param name="operation">The operation to be applied to the value. Can only be of the type OperatorType and be "=", "!=", "<", ">", "<=" or ">=".</param>
+    /// <param name="value">The value for comparison. What values are accepted, depends on the category.</param>
+    /// <returns>A list of the filtered cereals</returns>
+    /// <exception cref="Exception">Thrown for various reasons, for example the value not matching the category or trying to use an unallowed operator on a string.</exception>
     public async Task<IEnumerable<Cereal>> GetFilteredCereals(string category, OperatorType operation, string value)
     {
+        // Method generated by Copilot, with edits/additions by me
         var propertyInfo = typeof(Cereal).GetProperty(category);
         if (propertyInfo == null)
         {
             throw new Exception($"Category '{category}' does not exist.");
         }
 
-        // This big if-block handles strings and the two enums that are essentially strings
-        if (propertyInfo.PropertyType == typeof(string) || propertyInfo.PropertyType == typeof(Manufacturers) || propertyInfo.PropertyType == typeof(HotOrColdType))
+        if (propertyInfo.PropertyType == typeof(string))
         {
-            if (operation != OperatorType.Equals && operation != OperatorType.NotEquals)
-            {
-                throw new Exception($"Invalid operator for '{category}' category. Only = and != are allowed.");
-            }
+            if (operation is not (OperatorType.Equals or OperatorType.NotEquals))
+                throw new Exception("Only = and != allowed for strings.");
 
-            if (propertyInfo.PropertyType != typeof(string))
-            {
-                if (!Enum.TryParse(propertyInfo.PropertyType, value, true, out var enumValue))
-                {
-                    throw new Exception($"Invalid value for '{category}' category. Allowed values are: {string.Join(", ", Enum.GetNames(propertyInfo.PropertyType))}.");
-                }
+            var lowerValue = value.ToLower();
 
-                if (propertyInfo.PropertyType == typeof(Manufacturers))
-                {
-                    var mfr = default(Manufacturers);
-
-                    try
-                    {
-                        mfr = (Manufacturers)enumValue;
-                    }
-                    catch (Exception)
-                    {
-                        throw new Exception($"Invalid value for '{category}' category. Allowed values are: {string.Join(", ", Enum.GetNames(typeof(Manufacturers)))}.");
-                    }
-
-                    return operation switch
-                    {
-                        OperatorType.Equals => await _context.Cereals.Where(c => EF.Property<Manufacturers>(c, category) == mfr).ToListAsync(),
-                        OperatorType.NotEquals => await _context.Cereals.Where(c => EF.Property<Manufacturers>(c, category) != mfr).ToListAsync(),
-                        _ => throw new Exception("Invalid operator.")
-                    };
-                }
-                else if (propertyInfo.PropertyType == typeof(HotOrColdType))
-                {
-                    var type = default(HotOrColdType);
-
-                    try
-                    {
-                        type = (HotOrColdType)enumValue;
-                    }
-                    catch (Exception)
-                    {
-                        throw new Exception($"Invalid value for '{category}' category. Allowed values are: {string.Join(", ", Enum.GetNames(typeof(HotOrColdType)))}.");
-                    }
-
-                    return operation switch
-                    {
-                        OperatorType.Equals => await _context.Cereals.Where(c => EF.Property<HotOrColdType>(c, category) == type).ToListAsync(),
-                        OperatorType.NotEquals => await _context.Cereals.Where(c => EF.Property<HotOrColdType>(c, category) != type).ToListAsync(),
-                        _ => throw new Exception("Invalid operator.")
-                    };
-                }
-            }
-
-            // this is just for the name for now and I'm pretty sure it only allows a case-insensitive exact match. Should probably be more flexible than that
             return operation switch
             {
-                OperatorType.Equals => await _context.Cereals.Where(c => EF.Property<string>(c, category).Equals(value, StringComparison.OrdinalIgnoreCase)).ToListAsync(),
-                OperatorType.NotEquals => await _context.Cereals.Where(c => !EF.Property<string>(c, category).Equals(value, StringComparison.OrdinalIgnoreCase)).ToListAsync(),
+                OperatorType.Equals =>
+                    await _context.Cereals
+                        .Where(c => EF.Property<string>(c, category)
+                        .ToLower() == lowerValue)
+                        .ToListAsync(),
+
+                OperatorType.NotEquals =>
+                    await _context.Cereals
+                        .Where(c => EF.Property<string>(c, category)
+                        .ToLower() != lowerValue)
+                        .ToListAsync(),
+
                 _ => throw new Exception("Invalid operator.")
             };
         }
 
-
-        // After this block, we go through the remainder which are all numeric types or integer-based enums
-
-
-        if (propertyInfo.PropertyType == typeof(VitaminAndMineralsType))
+        if (propertyInfo.PropertyType == typeof(int) || propertyInfo.PropertyType == typeof(VitaminAndMineralsType) || propertyInfo.PropertyType == typeof(DisplayShelfType))
         {
-            // should it also accept doubles and have that comparison happen?
             if (!int.TryParse(value, out var intVal))
-            {
-                throw new Exception($"Invalid value for '{category}' category. Allowed values are integers only.");
-            }
+                throw new Exception("Invalid int.");
 
-            return operation switch
-            {
-                OperatorType.Equals => await _context.Cereals.Where(c => EF.Property<VitaminAndMineralsType>(c, category).ToInt() == intVal).ToListAsync(),
-                OperatorType.NotEquals => await _context.Cereals.Where(c => EF.Property<VitaminAndMineralsType>(c, category).ToInt() != intVal).ToListAsync(),
-                OperatorType.GreaterThan => await _context.Cereals.Where(c => EF.Property<VitaminAndMineralsType>(c, category).ToInt() > intVal).ToListAsync(),
-                OperatorType.SmallerThan => await _context.Cereals.Where(c => EF.Property<VitaminAndMineralsType>(c, category).ToInt() < intVal).ToListAsync(),
-                OperatorType.GreaterThanOrEqual => await _context.Cereals.Where(c => EF.Property<VitaminAndMineralsType>(c, category).ToInt() >= intVal).ToListAsync(),
-                OperatorType.SmallerThanOrEqual => await _context.Cereals.Where(c => EF.Property<VitaminAndMineralsType>(c, category).ToInt() <= intVal).ToListAsync(),
-                _ => throw new Exception("Invalid operator.")
-            };
-        }
-
-        if (propertyInfo.PropertyType == typeof(DisplayShelfType))
-        {
-            // should it also accept doubles and have that comparison happen?
-            if (!int.TryParse(value, out var intVal))
-            {
-                throw new Exception($"Invalid value for '{category}' category. Allowed values are integers only.");
-            }
-
-            return operation switch
-            {
-                OperatorType.Equals => await _context.Cereals.Where(c => EF.Property<DisplayShelfType>(c, category).ToInt() == intVal).ToListAsync(),
-                OperatorType.NotEquals => await _context.Cereals.Where(c => EF.Property<DisplayShelfType>(c, category).ToInt() != intVal).ToListAsync(),
-                OperatorType.GreaterThan => await _context.Cereals.Where(c => EF.Property<DisplayShelfType>(c, category).ToInt() > intVal).ToListAsync(),
-                OperatorType.SmallerThan => await _context.Cereals.Where(c => EF.Property<DisplayShelfType>(c, category).ToInt() < intVal).ToListAsync(),
-                OperatorType.GreaterThanOrEqual => await _context.Cereals.Where(c => EF.Property<DisplayShelfType>(c, category).ToInt() >= intVal).ToListAsync(),
-                OperatorType.SmallerThanOrEqual => await _context.Cereals.Where(c => EF.Property<DisplayShelfType>(c, category).ToInt() <= intVal).ToListAsync(),
-                _ => throw new Exception("Invalid operator.")
-            };
-        }
-
-        if (propertyInfo.PropertyType == typeof(int))
-        {
-            // should it also accept doubles and have that comparison happen?
-            if (!int.TryParse(value, out var intVal))
-            {
-                throw new Exception($"Invalid value for '{category}' category. Allowed values are integers only.");
-            }
-
-            return operation switch
-            {
-                OperatorType.Equals => await _context.Cereals.Where(c => EF.Property<int>(c, category) == intVal).ToListAsync(),
-                OperatorType.NotEquals => await _context.Cereals.Where(c => EF.Property<int>(c, category) != intVal).ToListAsync(),
-                OperatorType.GreaterThan => await _context.Cereals.Where(c => EF.Property<int>(c, category) > intVal).ToListAsync(),
-                OperatorType.SmallerThan => await _context.Cereals.Where(c => EF.Property<int>(c, category) < intVal).ToListAsync(),
-                OperatorType.GreaterThanOrEqual => await _context.Cereals.Where(c => EF.Property<int>(c, category) >= intVal).ToListAsync(),
-                OperatorType.SmallerThanOrEqual => await _context.Cereals.Where(c => EF.Property<int>(c, category) <= intVal).ToListAsync(),
-                _ => throw new Exception("Invalid operator.")
-            };
+            return await ApplyNumericFilter(
+                _context.Cereals,
+                category,
+                operation,
+                intVal
+            ).ToListAsync();
         }
 
         if (propertyInfo.PropertyType == typeof(double))
         {
             if (!double.TryParse(value, out var doubleVal))
-            {
-                throw new Exception($"Invalid value for '{category}' category. Allowed values are doubles only.");
-            }
+                throw new Exception("Invalid double.");
+
+            return await ApplyNumericFilter(
+                _context.Cereals,
+                category,
+                operation,
+                doubleVal
+            ).ToListAsync();
+        }
+
+        if (propertyInfo.PropertyType.IsEnum)
+        {
+            if (operation is not (OperatorType.Equals or OperatorType.NotEquals))
+                throw new Exception($"Only = and != allowed for {category}.");
+
+            if (!Enum.TryParse(propertyInfo.PropertyType, value, true, out var enumValue))
+                throw new Exception($"Invalid value. Allowed: {string.Join(", ", Enum.GetNames(propertyInfo.PropertyType))}");
 
             return operation switch
             {
-                OperatorType.Equals => await _context.Cereals.Where(c => EF.Property<double>(c, category) == doubleVal).ToListAsync(),
-                OperatorType.NotEquals => await _context.Cereals.Where(c => EF.Property<double>(c, category) != doubleVal).ToListAsync(),
-                OperatorType.GreaterThan => await _context.Cereals.Where(c => EF.Property<double>(c, category) > doubleVal).ToListAsync(),
-                OperatorType.SmallerThan => await _context.Cereals.Where(c => EF.Property<double>(c, category) < doubleVal).ToListAsync(),
-                OperatorType.GreaterThanOrEqual => await _context.Cereals.Where(c => EF.Property<double>(c, category) >= doubleVal).ToListAsync(),
-                OperatorType.SmallerThanOrEqual => await _context.Cereals.Where(c => EF.Property<double>(c, category) <= doubleVal).ToListAsync(),
+                OperatorType.Equals =>
+                    await _context.Cereals
+                        .Where(c => EF.Property<object>(c, category).Equals(enumValue))
+                        .ToListAsync(),
+
+                OperatorType.NotEquals =>
+                    await _context.Cereals
+                        .Where(c => !EF.Property<object>(c, category).Equals(enumValue))
+                        .ToListAsync(),
+
                 _ => throw new Exception("Invalid operator.")
             };
         }
@@ -314,5 +412,41 @@ public class CerealRepository : ICerealRepository
     public bool CerealExists(Guid id)
     {
         return _context.Cereals.Any(e => e.Id == id);
+    }
+
+    // Generated by Copilot
+    private static IQueryable<Cereal> ApplyNumericFilter<T>(
+        IQueryable<Cereal> query,
+        string category,
+        OperatorType op,
+        T value)
+        where T : struct
+    {
+        var parameter = Expression.Parameter(typeof(Cereal), "c");
+
+        // EF.Property<T>(c, category)
+        var propertyMethod = typeof(EF)
+            .GetMethod(nameof(EF.Property))!
+            .MakeGenericMethod(typeof(T));
+
+        var property = Expression.Call(propertyMethod, parameter, Expression.Constant(category));
+
+        var constant = Expression.Constant(value, typeof(T));
+
+        Expression comparison = op switch
+        {
+            OperatorType.Equals => Expression.Equal(property, constant),
+            OperatorType.NotEquals => Expression.NotEqual(property, constant),
+            OperatorType.GreaterThan => Expression.GreaterThan(property, constant),
+            OperatorType.SmallerThan => Expression.LessThan(property, constant),
+            OperatorType.GreaterThanOrEqual => Expression.GreaterThanOrEqual(property, constant),
+            OperatorType.SmallerThanOrEqual => Expression.LessThanOrEqual(property, constant),
+            _ => throw new Exception("Invalid operator.")
+        };
+
+        var lambda = Expression.Lambda<Func<Cereal, bool>>(comparison, parameter);
+
+        return query.Where(lambda);
+
     }
 }

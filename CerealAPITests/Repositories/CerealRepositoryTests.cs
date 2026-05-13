@@ -160,7 +160,7 @@ public sealed class CerealRepositoryTests
     public async Task GetFilteredCereals_ForGreaterThan_ReturnsFilteredCereals(string category, string value, int expectedCount)
     {
         // Arrange
-        using (var context = GetTestDbContext("GetFilteredCereals_ForGreaterThan_ReturnsSortedCereals" + category))
+        using (var context = GetTestDbContext("GetFilteredCereals_ForGreaterThan_ReturnsFilteredCereals" + category))
         {
             var repository = new CerealRepository(context);
 
@@ -176,9 +176,9 @@ public sealed class CerealRepositoryTests
     }
 
     [TestMethod]
+    [DataRow("Name", "Test Cereal 1", 1)]
     [DataRow("Type", "C", 2)]
-    [DataRow("Type", "H", 1)]
-    public async Task GetFilteredCereals_ForEqualsType_ReturnsFilteredCereals(string category, string value, int expectedCount)
+    public async Task GetFilteredCereals_ForEqualsForStrings_ReturnsFilteredCereals(string category, string value, int expectedCount)
     {
         // Arrange
         using (var context = GetTestDbContext("GetFilteredCereals_ForEqualsType_ReturnsFilteredCereals" + value))
