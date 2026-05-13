@@ -23,18 +23,19 @@ public class ListCerealsModel : PageModel
 
     public async Task OnGetAsync()
     {
+        ActionResult<IEnumerable<Models.Cereal>> ok;
+        
         if (FilterCategory == string.Empty || FilterValue == string.Empty)
         {
-            var ok = await _controller.GetCereals();
-            var cereals = (ok.Result as ViewResult)?.Model as IEnumerable<Models.Cereal>;
-            Cereal = cereals!.OrderBy(c => c.Name).ToList();
+            ok = await _controller.GetCereals();
         } 
         else
         {
-            var ok = await _controller.GetCereals(FilterCategory, FilterOperation, FilterValue);
-            var cereals = (ok.Result as ViewResult)?.Model as IEnumerable<Models.Cereal>;
-            Cereal = cereals!.OrderBy(c => c.Name).ToList();
+            ok = await _controller.GetCereals(FilterCategory, FilterOperation, FilterValue);
         }
+
+        var cereals = (ok.Result as ViewResult)?.Model as IEnumerable<Models.Cereal>;
+        Cereal = cereals!.OrderBy(c => c.Name).ToList();
     }
 
     public async Task FilterCereals(string category, OperatorType operation, string value)
