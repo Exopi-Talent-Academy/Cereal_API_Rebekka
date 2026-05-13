@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Cereal_API.Models;
 using Cereal_API.Repositories;
+using Cereal_API.Models.Types;
 
 namespace Cereal_API.Controllers;
 
@@ -23,12 +24,31 @@ public class CerealController : Controller
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Cereal>>> GetCereals()
     {
-        // should take some inputs that determines how the cereals are filtered so it can pass them to the repository method
         try
         {
             var cereals = await _cerealRepository.GetAllCereals();
             return View(cereals);
         }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    // GET: api/Cereal/?????
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<Cereal>>> GetCereals(string category, OperatorType operation, string value)
+    {
+        if (category == null || value == null)
+        {
+            return BadRequest("All fields need a value.");
+        }
+
+        try
+        {
+            var cereals = await _cerealRepository.GetFilteredCereals(category, operation, value);
+            return View(cereals);
+        } 
         catch (Exception ex)
         {
             return BadRequest(ex.Message);

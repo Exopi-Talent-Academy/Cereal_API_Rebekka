@@ -197,12 +197,12 @@ public sealed class CerealRepositoryTests
     }
 
     [TestMethod]
-    public async Task GetFilteredCereals_WhenGivenNonExistingCategory_ThrowsException()
+    public async Task GetFilteredCereals_ThrowsException_WhenGivenNonExistingCategory()
     {
         string nonExistingCategory = "Milk";
 
         // Arrange
-        using (var context = GetTestDbContext("GetFilteredCereals_WhenGivenNonExistingCategory_ThrowsException"))
+        using (var context = GetTestDbContext("GetFilteredCereals_ThrowsException_WhenGivenNonExistingCategory"))
         {
             var repository = new CerealRepository(context);
 
@@ -217,10 +217,10 @@ public sealed class CerealRepositoryTests
     [TestMethod]
     [DataRow("Name", OperatorType.SmallerThan, "Cheese")]
     [DataRow("Mfr", OperatorType.GreaterThanOrEqual, "K")]
-    public async Task GetFilteredCereals_WhenGivenNonEqualsOrNotEqualsForString_ThrowsException(string category, OperatorType operation, string value)
+    public async Task GetFilteredCereals_ThrowsException_WhenGivenNonEqualsOrNotEqualsForString(string category, OperatorType operation, string value)
     {
         // Arrange
-        using (var context = GetTestDbContext("GetFilteredCereals_WhenGivenNonEqualsOrNotEqualsForString_ThrowsException" + category))
+        using (var context = GetTestDbContext("GetFilteredCereals_ThrowsException_WhenGivenNonEqualsOrNotEqualsForString_ThrowsException" + category))
         {
             var repository = new CerealRepository(context);
 
@@ -236,10 +236,10 @@ public sealed class CerealRepositoryTests
     [DataRow("Protein", OperatorType.Equals, "testing123")]
     [DataRow("Shelf", OperatorType.SmallerThan, "I love ramen")]
     [DataRow("Rating", OperatorType.GreaterThan, "6.7 is a numbaaaaa")]
-    public async Task GetFilteredCereal_WhenGivenTextForNumber_ThrowsException(string category, OperatorType operation, string value)
+    public async Task GetFilteredCereal_ThrowsException_WhenGivenTextForNumber(string category, OperatorType operation, string value)
     {
         // Arrange
-        using (var context = GetTestDbContext("GetFilteredCereals_WhenGivenTextForNumber_ThrowsException" + category))
+        using (var context = GetTestDbContext("GetFilteredCereals_ThrowsException_WhenGivenTextForNumber" + category))
         {
             var repository = new CerealRepository(context);
 

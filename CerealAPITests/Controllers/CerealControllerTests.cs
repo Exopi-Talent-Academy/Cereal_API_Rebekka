@@ -3,7 +3,6 @@ using Cereal_API.Models;
 using Cereal_API.Models.Types;
 using Cereal_API.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Diagnostics;
 using Moq;
 
 namespace Cereal_API.Tests.Controllers;
@@ -82,7 +81,7 @@ public sealed class CerealControllerTests
     }
 
     [TestMethod]
-    public async Task GetAllCereals_ReturnsAllCereals() 
+    public async Task GetCerealsAll_ReturnsAllCereals() 
     {
         // Arrange
         var mockRepo = new Mock<ICerealRepository>();
@@ -104,7 +103,7 @@ public sealed class CerealControllerTests
     }
 
     [TestMethod]
-    public async Task GetAllCereals_ReturnsBadRequest_WhenExceptionThrown() 
+    public async Task GetCerealsAll_ReturnsBadRequest_WhenExceptionThrown() 
     {
         // Arrange
         var mockRepo = new Mock<ICerealRepository>();
@@ -113,6 +112,51 @@ public sealed class CerealControllerTests
 
         // Act
         var result = await controller.GetCereals();
+
+        // Assert
+        Assert.IsInstanceOfType(result.Result, typeof(BadRequestObjectResult));
+    }
+
+    [TestMethod]
+    public async Task GetCerealsFiltered_GivesFilteredCereals()
+    {
+        // Arrange
+        string category = "Rating";
+        OperatorType op = OperatorType.GreaterThan;
+        string value = "0.2";
+
+        var mockRepo = new Mock<ICerealRepository>();
+        var expectedCereals = new List<Cereal>
+        {
+            TestCereal1,
+            TestCereal2
+        };
+        mockRepo.Setup(repo => repo.GetFilteredCereals(category, op, value)).ReturnsAsync(expectedCereals);
+        var controller = new CerealController(mockRepo.Object);
+
+        // Act
+        var result = await controller.GetCereals(category, op, value);
+
+        // Assert
+        Assert.IsInstanceOfType(result.Result, typeof(ViewResult));
+        var viewResult = result.Result as ViewResult;
+        Assert.AreEqual(expectedCereals.Count, (viewResult!.Model as IEnumerable<Cereal>)!.Count());
+    }
+
+    [TestMethod]
+    public async Task GetCerealsFiltered_ReturnsBadRequest_WhenGivenException()
+    {
+        // Arrange
+        string category = "Mfr";
+        OperatorType op = OperatorType.GreaterThan;
+        string value = "K";
+
+        var mockRepo = new Mock<ICerealRepository>();
+        mockRepo.Setup(repo => repo.GetFilteredCereals(category, op, value)).ThrowsAsync(new Exception("Invalid operator."));
+        var controller = new CerealController(mockRepo.Object);
+
+        // Act
+        var result = await controller.GetCereals(category, op, value);
 
         // Assert
         Assert.IsInstanceOfType(result.Result, typeof(BadRequestObjectResult));
